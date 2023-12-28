@@ -1,0 +1,16 @@
+spring:
+  data:
+    # redis配置
+    redis:
+      database: 0
+      host: 192.168.40.10
+      port: 16379
+      password: '123456'
+  # mysql配置
+  datasource:
+    url: jdbc:mysql://192.168.40.10:13306/chatbridge?useUnicode=true&serverTimezone=Asia/Shanghai&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&allowMultiQueries=true&useSSL=true
+    username: root
+    password: 123456
+chat-bridge:
+  # 敏感数据加密密钥（128bit，使用Base64编码）
+  business-key: 1tDZ7omDsiHpVtqGp7Aoiw==

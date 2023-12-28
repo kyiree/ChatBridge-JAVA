@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.chat.bridge.business.repository.mapper.ExchangeMapper">
+
+    <select id="findPage" resultType="com.cn.chat.bridge.business.repository.entity.Exchange">
+        SELECT * FROM `tb_exchange` e
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="null != request.search and '' != request.search">
+                <bind name="search" value="'%' + request.search + '%'" />
+                AND (u.exchange_code LIKE #{search})
+            </if>
+        </trim>
+        ORDER BY
+        e.${request.sortProp}
+        <if test="!request.isAsc()">
+            DESC
+        </if>
+    </select>
+
+</mapper>
