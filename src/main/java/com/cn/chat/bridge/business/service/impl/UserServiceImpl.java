@@ -13,6 +13,7 @@ import com.cn.chat.bridge.common.constant.FileEnum;
 import com.cn.chat.bridge.common.exception.BusinessException;
 import com.cn.chat.bridge.admin.service.impl.AliUploadServiceImpl;
 import com.cn.chat.bridge.common.utils.AuthUtils;
+import com.cn.chat.bridge.common.utils.CryptUtils;
 import com.cn.chat.bridge.common.vo.PageVo;
 import com.cn.chat.bridge.user.repository.UserRepository;
 import com.cn.chat.bridge.user.repository.entity.User;
@@ -68,7 +69,7 @@ public class UserServiceImpl implements UserService {
             throw BusinessException.create(CodeEnum.EMAIL_BIND_ERR);
         }
 
-        User user = repository.getByEmail(email);
+        User user = repository.getByEmail(CryptUtils.encryptSm4(email));
         if (Objects.isNull(user) || !Objects.equals(user.getPassword(), password)) {
             throw BusinessException.create(CodeEnum.EMAIL_LOGIN_PWD_ERR);
         }
@@ -86,7 +87,7 @@ public class UserServiceImpl implements UserService {
         repository.removeById(user.getId());
 
         // 重新分配小程序账号数据
-        repository.updateEmailAndPwdAndTypeAndFrequencyById(currentLoginId, email, password, user.getType(),
+        repository.updateEmailAndPwdAndTypeAndFrequencyById(currentLoginId, email, CryptUtils.encryptSm4(password), user.getType(),
                 user.getFrequency() + currentUser.getFrequency());
     }
 

@@ -8,6 +8,7 @@ import com.cn.chat.bridge.common.constant.CodeEnum;
 import com.cn.chat.bridge.common.exception.BusinessException;
 import com.cn.chat.bridge.common.constant.MessageConstant;
 import com.cn.chat.bridge.common.utils.AuthUtils;
+import com.cn.chat.bridge.common.utils.SpringContextUtil;
 import com.cn.chat.bridge.gpt.service.GptService;
 import com.cn.chat.bridge.common.utils.JsonUtils;
 import com.cn.chat.bridge.gpt.dto.WebMessageRequest;
@@ -15,9 +16,12 @@ import com.cn.chat.bridge.gpt.vo.ChatGptChunkChoicesDeltaVo;
 import com.cn.chat.bridge.gpt.vo.ChatGptChunkChoicesVo;
 import com.cn.chat.bridge.gpt.vo.ChatGptChunkVo;
 import com.fasterxml.jackson.core.type.TypeReference;
+import jakarta.annotation.PostConstruct;
 import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -34,13 +38,10 @@ import java.util.List;
 @ServerEndpoint("/gpt-web/api/{token}")
 @SuppressWarnings("all")
 @Service
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class WebGptWss {
 
     private Session session;
-    private final GptService gptService;
-    private final UserService userService;
-    private final SystemService systemService;
 
     @OnOpen
     public void onOpen(final Session session, @PathParam("token") String token) {
@@ -60,13 +61,13 @@ public class WebGptWss {
 
             Long userId = AuthUtils.getLoginIdByToken(token);
 
-            gptService.lastOperationTime(userId);
+            SpringContextUtil.getBean(GptService.class).lastOperationTime(userId);
 
-            Long frequency = systemService.getServerConfig().getGptPlusFrequency();
+            Long frequency = SpringContextUtil.getBean(SystemService.class).getServerConfig().getGptPlusFrequency();
 
-            userService.minusFrequency(frequency, userId);
+            SpringContextUtil.getBean(UserService.class).minusFrequency(frequency, userId);
             // 与GPT建立通信
-            gptService.concatenationGpt(webMessageRequest)
+            SpringContextUtil.getBean(GptService.class).concatenationGpt(webMessageRequest)
                     .doFinally(signal -> handleWebSocketCompletion())
                     .subscribe(data -> {
                         if (StringUtils.isNotBlank(data)) {
@@ -87,7 +88,7 @@ public class WebGptWss {
                             }
                         }
                     }, throwable -> {
-                        userService.plusFrequency(frequency, userId);
+                        SpringContextUtil.getBean(UserService.class).plusFrequency(frequency, userId);
                         log.error("调用GPT时出现异常", throwable);
                         appointSendingSystem(MessageConstant.GPT_TIMEOUT);
                     });

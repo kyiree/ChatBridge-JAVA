@@ -9,8 +9,6 @@ import java.util.List;
 
 /**
  * 权限拦截处理类
- * @author 时间海 @github dulaiduwang003
- * @version 1.0
  */
 @Component
 @RequiredArgsConstructor

@@ -1,7 +1,5 @@
 package com.cn.chat.bridge.admin.service.impl;
 
-import cn.hutool.extra.mail.Mail;
-import cn.hutool.extra.mail.MailAccount;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.cn.chat.bridge.admin.constant.SystemPropertyTypeEnum;
@@ -22,10 +20,11 @@ import com.cn.chat.bridge.common.utils.BeanUtils;
 import com.cn.chat.bridge.business.vo.ServerConfigVo;
 import com.cn.chat.bridge.business.vo.ExchangeCodeListVo;
 import com.cn.chat.bridge.common.vo.PageVo;
+import com.cn.chat.bridge.framework.mail.Mail;
+import com.cn.chat.bridge.framework.mail.MailAccount;
 import com.sun.mail.util.MailSSLSocketFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -205,8 +204,30 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
+    public ProxyConfigDto getProxyConfig() {
+        ProxyConfigDto proxyConfigDto = (ProxyConfigDto) cacheService.getFromCache4Object(SystemPropertyTypeEnum.PROXY_CONFIG.getCacheKey(), SystemPropertyTypeEnum.PROXY_CONFIG.getCls());
+        if (Objects.isNull(proxyConfigDto)) {
+            proxyConfigDto = systemSettingRepository.getByType(SystemPropertyTypeEnum.PROXY_CONFIG);
+            cacheService.addToCache4Object(SystemPropertyTypeEnum.PROXY_CONFIG.getCacheKey(), proxyConfigDto, 10L);
+        }
+        BusinessException.assertNotNull(proxyConfigDto);
+        return proxyConfigDto;
+    }
+
+    @Override
+    public OpenAiConfigDto getOpenAiConfig() {
+        OpenAiConfigDto openAiConfigDto = (OpenAiConfigDto) cacheService.getFromCache4Object(SystemPropertyTypeEnum.OPEN_AI_CONFIG.getCacheKey(), SystemPropertyTypeEnum.OPEN_AI_CONFIG.getCls());
+        if (Objects.isNull(openAiConfigDto)) {
+            openAiConfigDto = systemSettingRepository.getByType(SystemPropertyTypeEnum.OPEN_AI_CONFIG);
+            cacheService.addToCache4Object(SystemPropertyTypeEnum.OPEN_AI_CONFIG.getCacheKey(), openAiConfigDto, 10L);
+        }
+        BusinessException.assertNotNull(openAiConfigDto);
+        return openAiConfigDto;
+    }
+
+    @Override
     public void sendEmail(String to, String title, String text) {
-        MailConfigDto mailConfigDto = systemSettingRepository.getByType(SystemPropertyTypeEnum.MAIL_CONFIG);
+        MailConfigDto mailConfigDto = getMailConfig();
 
         MailAccount mailAccount = new MailAccount();
         mailAccount.setAuth(true);
@@ -215,6 +236,7 @@ public class SystemServiceImpl implements SystemService {
         mailAccount.setUser(mailConfigDto.fetchUsername());
         mailAccount.setPass(mailConfigDto.fetchPassword());
         mailAccount.setPort(mailConfigDto.getPort());
+        mailAccount.setFrom(mailConfigDto.fetchUsername());
 
         try {
             MailSSLSocketFactory sf = new MailSSLSocketFactory();

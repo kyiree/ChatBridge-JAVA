@@ -2,6 +2,7 @@ package com.cn.chat.bridge.user.repository.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.cn.chat.bridge.admin.request.UpdateUserRequest;
+import com.cn.chat.bridge.common.constant.DefaultUserEnum;
 import com.cn.chat.bridge.common.utils.CloneUtils;
 import com.cn.chat.bridge.common.utils.CryptUtils;
 import com.cn.chat.bridge.user.constant.UserTypeEnum;
@@ -20,10 +21,6 @@ public class User {
      */
     @TableId(type = IdType.AUTO)
     private Long id;
-    /**
-     * 微信用户身份标识
-     */
-    private String openId;
 
     /**
      * 用户昵称
@@ -63,6 +60,10 @@ public class User {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
+    private Long createdUserId;
+
+    private Long updateUserId;
+
     public static User create4Add(String email, String password) {
         LocalDateTime now = LocalDateTime.now();
 
@@ -73,6 +74,8 @@ public class User {
         add.setFrequency(5L);
         add.setCreatedTime(now);
         add.setUpdateTime(now);
+        add.setCreatedUserId(DefaultUserEnum.EMPTY.getId());
+        add.setUpdateUserId(DefaultUserEnum.EMPTY.getId());
         return add;
     }
 
@@ -80,7 +83,6 @@ public class User {
         LocalDateTime now = LocalDateTime.now();
 
         User add = new User();
-        add.setOpenId(openId);
         add.setType(UserTypeEnum.NORMAL);
         add.setFrequency(5L);
         add.setCreatedTime(now);
@@ -93,7 +95,6 @@ public class User {
         userInfoVo.setUserName(userName);
         userInfoVo.setType(type);
         userInfoVo.setAvatar(avatar);
-        userInfoVo.setOpenId(openId);
         userInfoVo.setFrequency(frequency);
         return userInfoVo;
     }

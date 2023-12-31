@@ -2,11 +2,14 @@ package com.cn.chat.bridge.gpt.service.impl;
 
 
 import com.cn.chat.bridge.admin.dto.BotConfigDto;
+import com.cn.chat.bridge.admin.dto.OpenAiConfigDto;
+import com.cn.chat.bridge.admin.dto.ProxyConfigDto;
 import com.cn.chat.bridge.admin.service.SystemService;
 import com.cn.chat.bridge.business.repository.PersonalityRepository;
 import com.cn.chat.bridge.business.repository.entity.Personality;
 import com.cn.chat.bridge.business.vo.PersonalityConfigStructureVo;
 import com.cn.chat.bridge.business.vo.ServerConfigVo;
+import com.cn.chat.bridge.common.constant.EnableEnum;
 import com.cn.chat.bridge.common.constant.OperateConstant;
 import com.cn.chat.bridge.common.constant.ServerConstant;
 import com.cn.chat.bridge.gpt.request.OpenAiGptMessageRequest;
@@ -58,7 +61,7 @@ public class GptServiceImpl implements GptService {
     @Async
     public void lastOperationTime(Long userId) {
         //设置当前最后操作时间
-        cacheService.addToCache4Object(OperateConstant.USER_CALL_TIME + userId, LocalDateTime.now(), 604800L);
+       // cacheService.addToCache4Object(OperateConstant.USER_CALL_TIME + userId, LocalDateTime.now(), 604800L);
     }
 
     @Override
@@ -98,23 +101,28 @@ public class GptServiceImpl implements GptService {
 
     @Override
     public Flux<String> concatenationGpt(WebMessageRequest request) {
+        OpenAiConfigDto openAiConfig = systemService.getOpenAiConfig();
+        ProxyConfigDto proxyConfig = systemService.getProxyConfig();
+
 
         // 创建带有代理的HttpClient
-        HttpClient httpClient = HttpClient.create()
+        HttpClient httpClient = Objects.equals(proxyConfig.getEnable(), EnableEnum.ENABLE) ? HttpClient.create()
                 .tcpConfiguration(tcpClient ->
                         tcpClient.proxy(proxy ->
                                 proxy.type(ProxyProvider.Proxy.HTTP)
-                                        .host("127.0.0.1")
-                                        .port(7890)
+                                        .host(proxyConfig.getProxyIp())
+                                        .port(proxyConfig.getProxyPort())
                         )
-                );
-        ServerConfigVo serverConfig = systemService.getServerConfig();
-        return webClient
-                .clientConnector(new ReactorClientHttpConnector(httpClient))
-                .baseUrl(serverConfig.getOpenAiPlusUrl())
-                .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + serverConfig.getOpenPlusKey()).build()
+                ) : null;
+        WebClient.Builder webClientBuilder = webClient.defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + openAiConfig.fetchOpenPlusKey());
+
+        if (Objects.nonNull(httpClient)) {
+            webClientBuilder.clientConnector(new ReactorClientHttpConnector(httpClient));
+        }
+
+        return webClientBuilder.build()
                 .post()
-                .uri(ServerConstant.GPT_DIALOGUE)
+                .uri(openAiConfig.getOpenAiPlusUrl())
                 .body(BodyInserters.fromValue(OpenAiGptRequest.create4Request(presetWords(request.getMessages()))))
                 .retrieve()
                 .bodyToFlux(String.class);

@@ -31,17 +31,9 @@ public class UserRepository extends ServiceImpl<UserMapper, User> {
 
     public void updatePwdByUserId(Long id, String password) {
         baseMapper.update(null, Wrappers.lambdaUpdate(User.class)
-                .set(User::getPassword, CryptUtils.encryptSm4(password))
+                .set(User::getPassword, password)
                 .eq(User::getId, id)
         );
-    }
-
-    public User getByOpenId(String openId) {
-        if (StringUtils.isBlank(openId)) {
-            return null;
-        }
-        return baseMapper.selectOne(Wrappers.lambdaQuery(User.class)
-                .eq(User::getOpenId, openId));
     }
 
     public void updateAvatarById(String avatar, Long id) {
@@ -62,7 +54,7 @@ public class UserRepository extends ServiceImpl<UserMapper, User> {
                                                          UserTypeEnum type, Long frequency) {
         baseMapper.update(null, Wrappers.lambdaUpdate(User.class)
                 .set(User::getEmail, email)
-                .set(User::getPassword, CryptUtils.encryptSm4(password))
+                .set(User::getPassword, password)
                 .set(User::getType, type)
                 .set(User::getFrequency, frequency)
                 .eq(User::getId, id)

@@ -41,40 +41,6 @@ public interface AuthService {
 
 
     /**
-     * 微信授权登录
-     *
-     * @param code the code
-     * @return the string
-     */
-    WechatAuthLoginVo wechatAuthorizedLogin(String code);
-
-
-    /**
-     * 获取微信登录二维码
-     *
-     * @return the WeChat qr code
-     */
-    WechatCodeVo getWechatQrCode();
-
-
-    /**
-     * 扫码登录
-     *
-     * @param verifyCode the verify code
-     * @param code       the code
-     */
-    void wechatAuthorizedLogin(String verifyCode, String code);
-
-
-    /**
-     * 是否授权登录
-     *
-     * @param verifyCode the verify code
-     * @return the string
-     */
-    WechatQrCodeLoginSucceedVo isQrcodeLoginSucceed(String verifyCode);
-
-    /**
      * 注销
      */
     void logout();

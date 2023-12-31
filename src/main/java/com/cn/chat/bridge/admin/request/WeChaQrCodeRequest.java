@@ -18,7 +18,7 @@ public class WeChaQrCodeRequest implements BaseRequest {
 
     private String scene;
 
-    private String page = "pages/web/authorizationView";
+//    private String page = "pages/web/authorizationView";
 
     private Boolean check_path = false;
 

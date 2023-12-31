@@ -88,5 +88,9 @@ public interface SystemService {
 
     MailConfigDto getMailConfig();
 
+    ProxyConfigDto getProxyConfig();
+
+    OpenAiConfigDto getOpenAiConfig();
+
     void sendEmail(String to, String title, String text);
 }

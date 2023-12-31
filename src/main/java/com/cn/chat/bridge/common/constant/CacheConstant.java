@@ -19,5 +19,8 @@ public class CacheConstant {
     public static final String ALI_PAY_CONFIG = "ALI:PAY:CONFIG";
 
     public static final String MAIL_CONFIG = "MAIL:CONFIG";
+
+    public static final String EMAIL_CODE = "EMAIL_CODE:";
+
 }
 

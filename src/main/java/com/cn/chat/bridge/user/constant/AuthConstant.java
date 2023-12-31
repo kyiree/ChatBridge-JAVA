@@ -10,9 +10,6 @@ public interface AuthConstant {
     String USER = "USER";
     String ROLE = "ROLE";
     String OPEN_ID = "OPEN_ID";
-
-    String EMAIL_CODE = "EMAIL_CODE:";
-
 }
 
 

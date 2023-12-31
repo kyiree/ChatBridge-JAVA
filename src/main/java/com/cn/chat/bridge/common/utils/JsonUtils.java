@@ -44,7 +44,7 @@ public class JsonUtils {
     private final String TIME_PATTERN = "HH:mm:ss";
 
     static {
-
+        configObjectMapper(OBJECT_MAPPER);
     }
 
     public ObjectMapper newObjectMapper() {

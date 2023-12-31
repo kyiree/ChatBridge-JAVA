@@ -77,9 +77,8 @@ CREATE TABLE IF NOT EXISTS `tb_star`
 CREATE TABLE IF NOT EXISTS `tb_user`
 (
     `id`              BIGINT AUTO_INCREMENT COMMENT '主键' PRIMARY KEY,
-    `open_id`         VARCHAR(256) COMMENT '微信用户标识',
+    `user_name`       VARCHAR(256) COMMENT '用户名称',
     `avatar`          VARCHAR(256) COMMENT '用户头像',
-    `user_name`       VARCHAR(128) COMMENT '用户微信昵称',
     `email`           VARCHAR(256),
     `password`        VARCHAR(256),
     `type`            VARCHAR(32)       NOT NULL,
@@ -89,11 +88,11 @@ CREATE TABLE IF NOT EXISTS `tb_user`
     `update_time`     DATETIME          NOT NULL COMMENT '修改时间',
     `created_user_id` BIGINT            NOT NULL COMMENT '创建者id',
     `update_user_id`  BIGINT            NOT NULL COMMENT '编辑者id',
-    UNIQUE `idx_tb_user_open_id` (`open_id`)
+    UNIQUE `idx_tb_user_email` (`email`)
 );
-INSERT INTO `tb_user`(id, open_id, avatar, user_name, email, password, type, frequency, is_sign_in, created_time,
+INSERT INTO `tb_user`(id, type, frequency, is_sign_in, created_time,
                       update_time, created_user_id, update_user_id)
-VALUES (1, null, null, 'admin', '', '', 'ADMIN', '999', 0, now(), now(), 1, 1);
+VALUES (1, 'ADMIN', '999', 0, now(), now(), 1, 1);
 
 CREATE TABLE IF NOT EXISTS `tb_system_setting`
 (

@@ -14,7 +14,6 @@ import com.cn.chat.bridge.common.vo.ResponseVo;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -70,40 +69,6 @@ public class AuthController {
     public ResponseVo<EmailLoginVo> emailLogin(@RequestBody @Valid EmailLoginRequest request) {
         return ResponseVo.success(authService.emailLogin(request));
     }
-
-    /**
-     * 获取扫码登录二维码
-     *
-     * @return the WeChat code
-     */
-    @PostMapping("/wechat/get/code")
-    public ResponseVo<WechatCodeVo> getWechatQcCode() {
-        return ResponseVo.success(authService.getWechatQrCode());
-    }
-
-
-    /**
-     * 扫码结果 是否登录成功
-     *
-     * @param verifyCode the verify code
-     * @return the result
-     */
-    @GetMapping("/wechat/code/result")
-    public ResponseVo<WechatQrCodeLoginSucceedVo> isQrCodeLoginSucceed(String verifyCode) {
-        return ResponseVo.success(authService.isQrcodeLoginSucceed(verifyCode));
-    }
-
-    /**
-     * 扫码确认授权登录
-     *
-     * @return the result
-     */
-    @PostMapping("/wechat/code/login")
-    public ResponseVo<BaseVo> wechatAuthQrCodeLogin(@RequestBody @Valid WeChatAuthQrCodeLoginRequest request) {
-        authService.wechatAuthorizedLogin(request.getVerifyCode(), request.getCode());
-        return ResponseVo.success();
-    }
-
 
     /**
      * 退出登录

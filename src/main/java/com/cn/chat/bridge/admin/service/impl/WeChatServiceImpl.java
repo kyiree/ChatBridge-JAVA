@@ -53,7 +53,7 @@ public class WeChatServiceImpl {
             final String url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=" + WeChatTokenUtil.INSTANCE.getWechatToken(weChatConfig.getAppId(), weChatConfig.fetchSecret());
             final byte[] block = WEB_CLIENT.post()
                     .uri(url)
-                    .body(BodyInserters.fromValue(new WeChaQrCodeRequest().setScene(secene).setEnv_version("release")))
+                    .body(BodyInserters.fromValue(new WeChaQrCodeRequest().setScene(secene).setEnv_version("develop")))
                     .retrieve().bodyToMono(byte[].class).block();
             return "data:image/png;base64," + Base64.getEncoder().encodeToString(block);
         } catch (Exception e) {

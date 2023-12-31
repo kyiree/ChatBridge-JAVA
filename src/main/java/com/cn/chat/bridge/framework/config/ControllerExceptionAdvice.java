@@ -2,6 +2,7 @@ package com.cn.chat.bridge.framework.config;
 
 import cn.dev33.satoken.exception.NotLoginException;
 import com.cn.chat.bridge.common.constant.CodeEnum;
+import com.cn.chat.bridge.common.exception.BusinessException;
 import com.cn.chat.bridge.common.request.BaseRequest;
 import com.cn.chat.bridge.common.vo.ResponseVo;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -59,6 +60,14 @@ public class ControllerExceptionAdvice {
         List<FieldError> allErrors = e.getBindingResult().getFieldErrors();
         ResponseVo<T> responseDto = ResponseVo.failure(CodeEnum.COMMON_ERR_PARAM_FORMAT_T);
         responseDto.setMsg(logBindError(allErrors));
+        return responseDto;
+    }
+
+    @ExceptionHandler(value = BusinessException.class)
+    private <T> ResponseVo<T> businessExceptionHandler(BusinessException e) {
+        log.error(e.getMessage(), e);
+        ResponseVo<T> responseDto = ResponseVo.failure(e.getCodeEnum());
+        responseDto.setMsg(responseDto.getMsg());
         return responseDto;
     }
 

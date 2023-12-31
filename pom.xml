@@ -188,11 +188,13 @@
             <version>33.0.0-jre</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>5.8.16</version>
+            <version>5.8.24</version>
         </dependency>
+
 
     </dependencies>
 
