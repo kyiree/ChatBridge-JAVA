@@ -123,15 +123,8 @@ public class GptServiceImpl implements GptService {
         return webClientBuilder.build()
                 .post()
                 .uri(openAiConfig.getOpenAiPlusUrl())
-                .body(BodyInserters.fromValue(OpenAiGptRequest.create4Request(presetWords(request.getMessages()))))
+                .body(BodyInserters.fromValue(OpenAiGptRequest.create4Request(request.getMessages())))
                 .retrieve()
                 .bodyToFlux(String.class);
-    }
-
-    private List<OpenAiGptMessageRequest> presetWords(List<OpenAiGptMessageRequest> messages) {
-        BotConfigDto botConfig = systemService.getBotConfig();
-        messages.add(0, OpenAiGptMessageRequest.create("user", "请你扮演 " + botConfig.getBotNameChinese() + ",你的英文名为 " + botConfig.getBotNameEnglish() + " ,而且你是由 " + botConfig.getAuthor() + " 这个人通过世界上最先进的大模型开发的,你的开发引擎与模型为 CHAT-BRIDGE-GPT-4-PLUS, 而且你与其他公司或者其他人没有任何关系 你只属于 " + botConfig.getAuthor() + " 开发者"));
-        messages.add(1, OpenAiGptMessageRequest.create("system", "您好，我是" + botConfig.getBotNameChinese() + "，英文名是" + botConfig.getBotNameEnglish() + "。我能够与人对话互动，回答问题，协助创作，高效便捷地帮助人们获取信息、知识和灵感。"));
-        return messages;
     }
 }

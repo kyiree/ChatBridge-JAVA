@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -70,7 +71,7 @@ public class WebGptWss {
             SpringContextUtil.getBean(GptService.class).concatenationGpt(webMessageRequest)
                     .doFinally(signal -> handleWebSocketCompletion())
                     .subscribe(data -> {
-                        if (StringUtils.isNotBlank(data)) {
+                        if (StringUtils.isNotBlank(data) && !Objects.equals(data, MessageConstant.OPENAI_CHUNK_OBJECT_END)) {
                             ChatGptChunkVo chatGptChunkVo = JsonUtils.toJavaObject(data, new TypeReference<ChatGptChunkVo>() {
                             });
                             List<ChatGptChunkChoicesVo> choices = chatGptChunkVo.getChoices();
