@@ -1,26 +1,21 @@
 package com.cn.chat.bridge.auth.service.impl;
 
-import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.dev33.satoken.stp.StpUtil;
 import com.cn.chat.bridge.admin.dto.MailConfigDto;
 import com.cn.chat.bridge.admin.service.SystemService;
+import com.cn.chat.bridge.admin.service.impl.WeChatServiceImpl;
+import com.cn.chat.bridge.auth.constant.AuthConstant;
+import com.cn.chat.bridge.auth.repository.UserRepository;
+import com.cn.chat.bridge.auth.repository.entity.User;
+import com.cn.chat.bridge.auth.service.AuthService;
 import com.cn.chat.bridge.auth.vo.EmailLoginVo;
-import com.cn.chat.bridge.auth.vo.WechatAuthLoginVo;
-import com.cn.chat.bridge.auth.vo.WechatQrCodeLoginSucceedVo;
-import com.cn.chat.bridge.common.constant.CacheConstant;
-import com.cn.chat.bridge.common.constant.CodeEnum;
-import com.cn.chat.bridge.common.constant.WeChatConstant;
-import com.cn.chat.bridge.common.exception.*;
-import com.cn.chat.bridge.common.service.ICacheService;
-import com.cn.chat.bridge.common.utils.CryptUtils;
-import com.cn.chat.bridge.user.constant.AuthConstant;
 import com.cn.chat.bridge.business.request.EmailCodeRequest;
 import com.cn.chat.bridge.business.request.EmailLoginRequest;
-import com.cn.chat.bridge.user.repository.UserRepository;
-import com.cn.chat.bridge.user.repository.entity.User;
-import com.cn.chat.bridge.auth.service.AuthService;
-import com.cn.chat.bridge.admin.service.impl.WeChatServiceImpl;
-import com.cn.chat.bridge.auth.vo.WechatCodeVo;
+import com.cn.chat.bridge.common.constant.CacheConstant;
+import com.cn.chat.bridge.common.constant.CodeEnum;
+import com.cn.chat.bridge.common.exception.BusinessException;
+import com.cn.chat.bridge.common.service.ICacheService;
+import com.cn.chat.bridge.common.utils.CryptUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -28,9 +23,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import java.util.Date;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * 登录授权业务处理类

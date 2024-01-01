@@ -2,6 +2,7 @@ package com.cn.chat.bridge.business.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.cn.chat.bridge.auth.request.StarPageRequest;
 import com.cn.chat.bridge.business.repository.StarRepository;
 import com.cn.chat.bridge.business.repository.entity.Star;
 import com.cn.chat.bridge.business.request.StarDialogueRequest;
@@ -12,10 +13,10 @@ import com.cn.chat.bridge.common.exception.BusinessException;
 import com.cn.chat.bridge.common.utils.AuthUtils;
 import com.cn.chat.bridge.common.vo.IdVo;
 import com.cn.chat.bridge.common.vo.PageVo;
-import com.cn.chat.bridge.user.request.StarPageRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class StarServiceImpl implements StarService {
     private final StarRepository repository;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public IdVo starDialogue(StarDialogueRequest request) {
         Star addStar = Star.create4Add(request, AuthUtils.getCurrentLoginId());
         repository.save(addStar);

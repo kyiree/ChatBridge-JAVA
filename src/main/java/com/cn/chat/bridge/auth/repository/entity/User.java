@@ -1,13 +1,13 @@
-package com.cn.chat.bridge.user.repository.entity;
+package com.cn.chat.bridge.auth.repository.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.cn.chat.bridge.admin.request.UpdateUserRequest;
+import com.cn.chat.bridge.auth.constant.UserTypeEnum;
+import com.cn.chat.bridge.auth.vo.UserInfoVo;
+import com.cn.chat.bridge.auth.vo.UserListVo;
 import com.cn.chat.bridge.common.constant.DefaultUserEnum;
 import com.cn.chat.bridge.common.utils.CloneUtils;
 import com.cn.chat.bridge.common.utils.CryptUtils;
-import com.cn.chat.bridge.user.constant.UserTypeEnum;
-import com.cn.chat.bridge.user.vo.UserInfoVo;
-import com.cn.chat.bridge.user.vo.UserListVo;
 import lombok.Data;
 
 import java.time.LocalDateTime;

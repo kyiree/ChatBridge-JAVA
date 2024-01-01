@@ -1,17 +1,18 @@
 package com.cn.chat.bridge.business.service.impl;
 
 import com.cn.chat.bridge.admin.service.SystemService;
+import com.cn.chat.bridge.auth.constant.UserConstant;
+import com.cn.chat.bridge.auth.repository.UserRepository;
+import com.cn.chat.bridge.auth.repository.entity.User;
 import com.cn.chat.bridge.business.repository.ExchangeRepository;
 import com.cn.chat.bridge.business.repository.entity.Exchange;
 import com.cn.chat.bridge.business.service.InspiritService;
+import com.cn.chat.bridge.common.constant.CacheConstant;
 import com.cn.chat.bridge.common.constant.CodeEnum;
 import com.cn.chat.bridge.common.exception.BusinessException;
 import com.cn.chat.bridge.common.service.ICacheService;
 import com.cn.chat.bridge.common.utils.AuthUtils;
 import com.cn.chat.bridge.common.utils.RedisLockHelper;
-import com.cn.chat.bridge.user.constant.UserConstant;
-import com.cn.chat.bridge.user.repository.UserRepository;
-import com.cn.chat.bridge.user.repository.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,7 +51,7 @@ public class InspiritServiceImpl implements InspiritService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void rewardVideo() {
-        String key = UserConstant.ACCESS_FREQUENCY + AuthUtils.getCurrentLoginId();
+        String key = CacheConstant.ACCESS_FREQUENCY + AuthUtils.getCurrentLoginId();
         long increment = cacheService.incrBy(key, 1L);
         if (increment <= 6) {
             if (increment == 1) {

@@ -1,8 +1,7 @@
-package com.cn.chat.bridge.user.request;
+package com.cn.chat.bridge.auth.request;
 
+import com.cn.chat.bridge.auth.constant.StarSortColumnEnum;
 import com.cn.chat.bridge.common.request.BasePageRequest;
-import com.cn.chat.bridge.user.constant.StarSortColumnEnum;
-import com.cn.chat.bridge.user.constant.UserSortColumnEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

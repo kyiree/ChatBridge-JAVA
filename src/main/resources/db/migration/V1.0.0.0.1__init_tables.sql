@@ -112,7 +112,7 @@ INSERT INTO `tb_system_setting`(`id`, `type`, `name`, `value`, `created_time`, `
 VALUES (null, 'ANNOUNCEMENT', 'context', NULL, now(), now(), 1, 1),
        (null, 'ANNOUNCEMENT', 'logotypeId', NULL, now(), now(), 1, 1),
        (null, 'ANNOUNCEMENT', 'createdTime', NULL, now(), now(), 1, 1),
-       (null, 'OPEN_AI_CONFIG', 'openAiPlusUrl', 'https://api.openai.com/v1', now(), now(), 1, 1),
+       (null, 'OPEN_AI_CONFIG', 'openAiPlusUrl', 'https://api.openai.com/v1/chat/completions', now(), now(), 1, 1),
        (null, 'OPEN_AI_CONFIG', 'openPlusKey', '', now(), now(), 1, 1),
        (null, 'OPEN_AI_CONFIG', 'gptPlusFrequency', '1', now(), now(), 1, 1),
        (null, 'BOT_CONFIG', 'botNameChinese', 'ChatBridge', now(), now(), 1, 1),
@@ -140,8 +140,18 @@ VALUES (null, 'ANNOUNCEMENT', 'context', NULL, now(), now(), 1, 1),
        (null, 'MAIL_CONFIG', 'password', NULL, now(), now(), 1, 1),
        (null, 'MAIL_CONFIG', 'port', NULL, now(), now(), 1, 1);
 
-
-
+CREATE TABLE IF NOT EXISTS `tb_dialogue`
+(
+    `id`              BIGINT AUTO_INCREMENT COMMENT '主键' PRIMARY KEY,
+    `uuid`            VARCHAR(64)   NOT NULL COMMENT '唯一id',
+    `issue`           LONGTEXT NOT NULL COMMENT '问题',
+    `answer`          LONGTEXT NOT NULL COMMENT '答案',
+    `created_time`    DATETIME NOT NULL COMMENT '创建时间',
+    `update_time`     DATETIME NOT NULL COMMENT '修改时间',
+    `created_user_id` BIGINT   NOT NULL COMMENT '创建者id',
+    `update_user_id`  BIGINT   NOT NULL COMMENT '编辑者id',
+    INDEX `idx_tb_dialogue_uuid`(`uuid`)
+);
 
 
 

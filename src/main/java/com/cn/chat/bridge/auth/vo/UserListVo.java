@@ -1,4 +1,4 @@
-package com.cn.chat.bridge.user.vo;
+package com.cn.chat.bridge.auth.vo;
 
 import com.cn.chat.bridge.common.vo.BaseVo;
 import lombok.Data;

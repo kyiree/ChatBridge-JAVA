@@ -11,12 +11,6 @@ import com.cn.chat.bridge.common.vo.IdVo;
 import com.cn.chat.bridge.common.vo.PageVo;
 import jakarta.servlet.http.HttpServletRequest;
 
-/**
- * 雨纷纷旧故里草木深
- *
- * @author 时间海 @github dulaiduwang003
- * @version 1.0
- */
 public interface PayService {
 
     /**

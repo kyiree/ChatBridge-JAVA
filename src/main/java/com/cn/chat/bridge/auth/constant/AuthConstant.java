@@ -1,4 +1,4 @@
-package com.cn.chat.bridge.user.constant;
+package com.cn.chat.bridge.auth.constant;
 
 /**
  * 登录认证

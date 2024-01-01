@@ -2,11 +2,10 @@ package com.cn.chat.bridge.business.repository.entity;
 
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.cn.chat.bridge.auth.request.UpdatePersonalityRequest;
 import com.cn.chat.bridge.common.utils.BeanUtils;
 import com.cn.chat.bridge.common.utils.CloneUtils;
-import com.cn.chat.bridge.user.request.UpdatePersonalityRequest;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 

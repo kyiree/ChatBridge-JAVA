@@ -1,16 +1,13 @@
-package com.cn.chat.bridge.user.repository;
+package com.cn.chat.bridge.auth.repository;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.cn.chat.bridge.common.utils.CryptUtils;
-import com.cn.chat.bridge.user.constant.UserTypeEnum;
-import com.cn.chat.bridge.user.repository.entity.User;
-import com.cn.chat.bridge.user.repository.mapper.UserMapper;
-import com.cn.chat.bridge.user.request.UserPageRequest;
+import com.cn.chat.bridge.auth.constant.UserTypeEnum;
+import com.cn.chat.bridge.auth.repository.entity.User;
+import com.cn.chat.bridge.auth.repository.mapper.UserMapper;
+import com.cn.chat.bridge.auth.request.UserPageRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 

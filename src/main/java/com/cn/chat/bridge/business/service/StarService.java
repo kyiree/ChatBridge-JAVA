@@ -1,20 +1,12 @@
 package com.cn.chat.bridge.business.service;
 
+import com.cn.chat.bridge.auth.request.StarPageRequest;
 import com.cn.chat.bridge.business.request.StarDialogueRequest;
 import com.cn.chat.bridge.business.vo.UserStarDetailVo;
 import com.cn.chat.bridge.business.vo.UserStarListVo;
 import com.cn.chat.bridge.common.vo.IdVo;
 import com.cn.chat.bridge.common.vo.PageVo;
-import com.cn.chat.bridge.user.request.StarPageRequest;
 
-import java.util.List;
-
-/**
- * 雨纷纷旧故里草木深
- *
- * @author 时间海 @github dulaiduwang003
- * @version 1.0
- */
 public interface StarService {
 
 

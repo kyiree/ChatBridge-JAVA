@@ -22,5 +22,9 @@ public class CacheConstant {
 
     public static final String EMAIL_CODE = "EMAIL_CODE:";
 
+    public static final String GPT_CONFIG = "GPT_CONFIG_USER_ID:";
+
+    public static final String ACCESS_FREQUENCY = "ACCESS_FREQUENCY_USER_ID:";
+
 }
 

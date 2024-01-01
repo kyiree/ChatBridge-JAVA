@@ -1,4 +1,4 @@
-package com.cn.chat.bridge.common.utils;
+package com.cn.chat.bridge.admin.service.impl;
 
 import cn.ipokerface.snowflake.SnowflakeIdGenerator;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -9,11 +9,11 @@ import java.util.Date;
 
 @Component
 @SuppressWarnings("all")
-public class IdGeneratorUtils {
+public class IdGeneratorServiceImpl {
 
     private final SnowflakeIdGenerator idGenerator;
 
-    public IdGeneratorUtils() {
+    public IdGeneratorServiceImpl() {
         this.idGenerator = new SnowflakeIdGenerator(0, 0);
     }
 

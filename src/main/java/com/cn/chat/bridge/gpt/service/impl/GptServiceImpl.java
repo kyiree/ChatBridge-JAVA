@@ -1,26 +1,22 @@
 package com.cn.chat.bridge.gpt.service.impl;
 
 
-import com.cn.chat.bridge.admin.dto.BotConfigDto;
 import com.cn.chat.bridge.admin.dto.OpenAiConfigDto;
 import com.cn.chat.bridge.admin.dto.ProxyConfigDto;
 import com.cn.chat.bridge.admin.service.SystemService;
+import com.cn.chat.bridge.auth.repository.UserRepository;
+import com.cn.chat.bridge.auth.request.UpdatePersonalityRequest;
 import com.cn.chat.bridge.business.repository.PersonalityRepository;
 import com.cn.chat.bridge.business.repository.entity.Personality;
 import com.cn.chat.bridge.business.vo.PersonalityConfigStructureVo;
-import com.cn.chat.bridge.business.vo.ServerConfigVo;
+import com.cn.chat.bridge.common.constant.CacheConstant;
 import com.cn.chat.bridge.common.constant.EnableEnum;
-import com.cn.chat.bridge.common.constant.OperateConstant;
-import com.cn.chat.bridge.common.constant.ServerConstant;
-import com.cn.chat.bridge.gpt.request.OpenAiGptMessageRequest;
-import com.cn.chat.bridge.gpt.request.OpenAiGptRequest;
 import com.cn.chat.bridge.common.service.ICacheService;
 import com.cn.chat.bridge.common.utils.AuthUtils;
 import com.cn.chat.bridge.gpt.dto.WebMessageRequest;
+import com.cn.chat.bridge.gpt.request.OpenAiGptRequest;
 import com.cn.chat.bridge.gpt.service.GptService;
-import com.cn.chat.bridge.user.constant.PersonalityConstant;
-import com.cn.chat.bridge.user.repository.UserRepository;
-import com.cn.chat.bridge.user.request.UpdatePersonalityRequest;
+import com.cn.chat.bridge.gpt.vo.GptSessionIdVo;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,9 +31,8 @@ import reactor.core.publisher.Flux;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.transport.ProxyProvider;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -68,7 +63,7 @@ public class GptServiceImpl implements GptService {
     public PersonalityConfigStructureVo getPersonalityConfig() {
         Long currentLoginId = AuthUtils.getCurrentLoginId();
 
-        String key = PersonalityConstant.GPT_CONFIG + currentLoginId;
+        String key = CacheConstant.GPT_CONFIG + currentLoginId;
         PersonalityConfigStructureVo personalityConfigStructureVo = cacheService.getFromCache4Object(key, PersonalityConfigStructureVo.class);
 
         if (Objects.isNull(personalityConfigStructureVo)) {
@@ -95,8 +90,14 @@ public class GptServiceImpl implements GptService {
             Personality add = Personality.create4Add(request, currentLoginId);
             personalityRepository.save(add);
         }
-        cacheService.removeFromCache4Object(PersonalityConstant.GPT_CONFIG + currentLoginId);
+        cacheService.removeFromCache4Object(CacheConstant.GPT_CONFIG + currentLoginId);
 
+    }
+
+    @Override
+    public GptSessionIdVo getSessionId() {
+        // todo kyire 是否考虑分布式
+        return GptSessionIdVo.create(UUID.randomUUID().toString());
     }
 
     @Override

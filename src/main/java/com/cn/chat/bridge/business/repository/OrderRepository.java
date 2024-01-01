@@ -1,17 +1,13 @@
 package com.cn.chat.bridge.business.repository;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cn.chat.bridge.business.repository.entity.Order;
-import com.cn.chat.bridge.business.repository.entity.Star;
 import com.cn.chat.bridge.business.repository.mapper.OrderMapper;
 import com.cn.chat.bridge.business.request.OrderPageRequest;
-import com.cn.chat.bridge.user.repository.entity.User;
-import com.cn.chat.bridge.user.request.UserPageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;

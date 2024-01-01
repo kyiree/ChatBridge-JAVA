@@ -1,7 +1,7 @@
-package com.cn.chat.bridge.user.vo;
+package com.cn.chat.bridge.auth.vo;
 
+import com.cn.chat.bridge.auth.constant.UserTypeEnum;
 import com.cn.chat.bridge.common.vo.BaseVo;
-import com.cn.chat.bridge.user.constant.UserTypeEnum;
 import lombok.Data;
 
 @Data

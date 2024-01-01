@@ -1,8 +1,7 @@
-package com.cn.chat.bridge.user.request;
+package com.cn.chat.bridge.auth.request;
 
 import com.cn.chat.bridge.common.request.BaseRequest;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data

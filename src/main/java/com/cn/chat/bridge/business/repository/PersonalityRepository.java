@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cn.chat.bridge.business.repository.entity.Personality;
 import com.cn.chat.bridge.business.repository.mapper.PersonalityMapper;
-import com.cn.chat.bridge.user.repository.entity.User;
 import org.springframework.stereotype.Repository;
 
 @Repository

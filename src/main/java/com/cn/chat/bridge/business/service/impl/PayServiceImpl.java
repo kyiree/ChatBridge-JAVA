@@ -12,14 +12,15 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.cn.chat.bridge.admin.dto.AliPayConfigDto;
 import com.cn.chat.bridge.admin.service.SystemService;
+import com.cn.chat.bridge.admin.service.impl.IdGeneratorServiceImpl;
 import com.cn.chat.bridge.business.constant.OrderStatusEnum;
-import com.cn.chat.bridge.business.request.AddProductRequest;
 import com.cn.chat.bridge.business.dto.AlipayCacheStructureDto;
 import com.cn.chat.bridge.business.listener.UnpaidOrderQueue;
 import com.cn.chat.bridge.business.repository.OrderRepository;
 import com.cn.chat.bridge.business.repository.ProductRepository;
 import com.cn.chat.bridge.business.repository.entity.Order;
 import com.cn.chat.bridge.business.repository.entity.Product;
+import com.cn.chat.bridge.business.request.AddProductRequest;
 import com.cn.chat.bridge.business.request.OrderPageRequest;
 import com.cn.chat.bridge.business.request.ProductPageRequest;
 import com.cn.chat.bridge.business.service.PayService;
@@ -33,7 +34,6 @@ import com.cn.chat.bridge.common.constant.OrderConstant;
 import com.cn.chat.bridge.common.exception.BusinessException;
 import com.cn.chat.bridge.common.service.ICacheService;
 import com.cn.chat.bridge.common.utils.AuthUtils;
-import com.cn.chat.bridge.common.utils.IdGeneratorUtils;
 import com.cn.chat.bridge.common.utils.QRCodeGenerator;
 import com.cn.chat.bridge.common.utils.RedisLockHelper;
 import com.cn.chat.bridge.common.vo.IdVo;
@@ -63,7 +63,7 @@ public class PayServiceImpl implements PayService {
 
     private final RedisLockHelper lockHelper;
 
-    private final IdGeneratorUtils idGeneratorUtils;
+    private final IdGeneratorServiceImpl idGeneratorServiceImpl;
 
     private final OrderRepository orderRepository;
 
@@ -184,7 +184,7 @@ public class PayServiceImpl implements PayService {
             BusinessException.assertNotNull(product, CodeEnum.PRODUCT_NULL_ERR);
 
             // 生成单号，保存订单
-            String orderNum = idGeneratorUtils.getOrderNo();
+            String orderNum = idGeneratorServiceImpl.getOrderNo();
             Order order = Order.create4Add(orderNum, product, currentLoginId);
             orderRepository.save(order);
 

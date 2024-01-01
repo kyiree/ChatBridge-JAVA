@@ -6,8 +6,6 @@ import lombok.Data;
 @Data
 public class StarDialogueRequest {
 
-    private Long starId;
-
     @NotBlank(message = "问题不能为空")
     private String issue;
 

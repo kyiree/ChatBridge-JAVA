@@ -6,9 +6,11 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
+import org.assertj.core.util.Lists;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -22,6 +24,12 @@ import java.util.Objects;
 public class BusinessException extends RuntimeException {
 
     private CodeEnum codeEnum;
+
+    private List<String> params;
+
+    private BusinessException(CodeEnum code) {
+        this.codeEnum = code;
+    }
 
     public static BusinessException create(CodeEnum codeEnum) {
         return new BusinessException(codeEnum);
@@ -45,9 +53,9 @@ public class BusinessException extends RuntimeException {
         }
     }
 
-    public static void assertTrue(boolean t, CodeEnum code) {
+    public static void assertTrue(boolean t, CodeEnum code, String ... params) {
         if (!t) {
-            throw new BusinessException(code);
+            throw new BusinessException(code, Lists.newArrayList(params));
         }
     }
 

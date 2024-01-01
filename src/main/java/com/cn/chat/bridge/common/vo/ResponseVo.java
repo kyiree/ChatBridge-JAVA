@@ -1,10 +1,13 @@
 package com.cn.chat.bridge.common.vo;
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.cn.chat.bridge.common.constant.CodeEnum;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -13,12 +16,14 @@ public class ResponseVo<T> {
 
     /**
      * 错误码
+     *
      * @see CodeEnum#getCode()
      */
     private Integer code;
 
     /**
      * 错误描述
+     *
      * @see CodeEnum#getMsg()
      */
     private String msg;
@@ -49,6 +54,17 @@ public class ResponseVo<T> {
         ResponseVo<T> vo = new ResponseVo<>();
         vo.setCode(codeEnum.getCode());
         vo.setMsg(codeEnum.getMsg());
+        return vo;
+    }
+
+    public static <T> ResponseVo<T> failure(CodeEnum codeEnum, List<String> params) {
+        ResponseVo<T> vo = new ResponseVo<>();
+        vo.setCode(codeEnum.getCode());
+        if (CollectionUtils.isEmpty(params)) {
+            vo.setMsg(codeEnum.getMsg());
+        } else {
+            vo.setMsg(String.format(codeEnum.getMsg(), params));
+        }
         return vo;
     }
 }

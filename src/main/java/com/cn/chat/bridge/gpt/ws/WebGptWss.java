@@ -5,38 +5,36 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.cn.chat.bridge.admin.service.SystemService;
 import com.cn.chat.bridge.business.service.UserService;
 import com.cn.chat.bridge.common.constant.CodeEnum;
-import com.cn.chat.bridge.common.exception.BusinessException;
 import com.cn.chat.bridge.common.constant.MessageConstant;
+import com.cn.chat.bridge.common.exception.BusinessException;
 import com.cn.chat.bridge.common.utils.AuthUtils;
-import com.cn.chat.bridge.common.utils.SpringContextUtil;
-import com.cn.chat.bridge.gpt.service.GptService;
 import com.cn.chat.bridge.common.utils.JsonUtils;
+import com.cn.chat.bridge.common.utils.SpringContextUtil;
 import com.cn.chat.bridge.gpt.dto.WebMessageRequest;
+import com.cn.chat.bridge.gpt.service.GptService;
 import com.cn.chat.bridge.gpt.vo.ChatGptChunkChoicesDeltaVo;
 import com.cn.chat.bridge.gpt.vo.ChatGptChunkChoicesVo;
 import com.cn.chat.bridge.gpt.vo.ChatGptChunkVo;
 import com.fasterxml.jackson.core.type.TypeReference;
-import jakarta.annotation.PostConstruct;
 import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 
 /**
- * 长连接响应. (标准)
+ * 长连接响应
  */
 @Slf4j
-@ServerEndpoint("/gpt-web/api/{token}")
+@ServerEndpoint("/gpt-web/api/{token}/{sessionId}")
 @SuppressWarnings("all")
 @Service
 @NoArgsConstructor
@@ -45,10 +43,11 @@ public class WebGptWss {
     private Session session;
 
     @OnOpen
-    public void onOpen(final Session session, @PathParam("token") String token) {
+    public void onOpen(final Session session, @PathParam("token") String token, @PathParam("sessionId") String sessionId) {
         try {
             assert session.getId() != null;
             assert StpUtil.getLoginIdByToken(token) != null;
+            assert StringUtils.isNotBlank(sessionId);
         } catch (Exception e) {
             return;
         }
@@ -56,8 +55,9 @@ public class WebGptWss {
     }
 
     @OnMessage
-    public void onMessage(String message, @PathParam("token") String token) {
+    public void onMessage(String message, @PathParam("token") String token, @PathParam("sessionId") String sessionId) {
         try {
+            // tpdo 前端传最新的
             WebMessageRequest webMessageRequest = JsonUtils.toJavaObject(message, WebMessageRequest.class);
 
             Long userId = AuthUtils.getLoginIdByToken(token);
@@ -68,6 +68,7 @@ public class WebGptWss {
 
             SpringContextUtil.getBean(UserService.class).minusFrequency(frequency, userId);
             // 与GPT建立通信
+            List<String> deltas = new ArrayList<>(1500);
             SpringContextUtil.getBean(GptService.class).concatenationGpt(webMessageRequest)
                     .doFinally(signal -> handleWebSocketCompletion())
                     .subscribe(data -> {
@@ -99,7 +100,7 @@ public class WebGptWss {
             appointSendingSystem(e.getCodeEnum().msg);
             handleWebSocketCompletion();
         } catch (Exception e) {
-            log.error(" 与 OPEN Ai建立连接失败 原因:{}", e.getMessage());
+            log.error(" 与 OPEN Ai建立连接失败 原因:{}", e.getMessage(), e);
             appointSendingSystem(MessageConstant.GPT_ERR);
             handleWebSocketCompletion();
         }

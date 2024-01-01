@@ -1,4 +1,4 @@
-package com.cn.chat.bridge.user.request;
+package com.cn.chat.bridge.auth.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

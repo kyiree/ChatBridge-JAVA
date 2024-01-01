@@ -2,7 +2,7 @@ package com.cn.chat.bridge.common.utils;
 
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
-import com.cn.chat.bridge.user.constant.AuthConstant;
+import com.cn.chat.bridge.auth.constant.AuthConstant;
 
 /**
  * 用户工具类

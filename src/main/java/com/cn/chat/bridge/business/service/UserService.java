@@ -1,19 +1,13 @@
 package com.cn.chat.bridge.business.service;
 
 import com.cn.chat.bridge.admin.request.UpdateUserRequest;
+import com.cn.chat.bridge.auth.request.UserPageRequest;
+import com.cn.chat.bridge.auth.vo.UserInfoVo;
+import com.cn.chat.bridge.auth.vo.UserListVo;
+import com.cn.chat.bridge.auth.vo.UserTotalVo;
 import com.cn.chat.bridge.common.vo.PageVo;
-import com.cn.chat.bridge.user.request.UserPageRequest;
-import com.cn.chat.bridge.user.vo.UserInfoVo;
-import com.cn.chat.bridge.user.vo.UserListVo;
-import com.cn.chat.bridge.user.vo.UserTotalVo;
 import org.springframework.web.multipart.MultipartFile;
 
-/**
- * 雨纷纷旧故里草木深
- *
- * @author 时间海 @github dulaiduwang003
- * @version 1.0
- */
 public interface UserService {
 
 
