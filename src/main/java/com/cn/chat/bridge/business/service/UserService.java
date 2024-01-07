@@ -4,7 +4,6 @@ import com.cn.chat.bridge.admin.request.UpdateUserRequest;
 import com.cn.chat.bridge.auth.request.UserPageRequest;
 import com.cn.chat.bridge.auth.vo.UserInfoVo;
 import com.cn.chat.bridge.auth.vo.UserListVo;
-import com.cn.chat.bridge.auth.vo.UserTotalVo;
 import com.cn.chat.bridge.common.vo.PageVo;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -50,11 +49,6 @@ public interface UserService {
      * 修改用户信息
      */
     void update(UpdateUserRequest dto);
-
-    /**
-     * 获取平台总人数
-     */
-    UserTotalVo getTotalUsers();
 
     /**
      * 减少使用次数

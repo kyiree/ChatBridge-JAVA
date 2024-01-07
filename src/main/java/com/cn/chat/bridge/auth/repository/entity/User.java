@@ -105,7 +105,7 @@ public class User {
         userListVo.setUserName(userName);
         userListVo.setCreatedTime(createdTime);
         userListVo.setFrequency(frequency);
-        userListVo.setEmail(email);
+        userListVo.setEmail(CryptUtils.decryptSm4(email));
         return userListVo;
     }
 

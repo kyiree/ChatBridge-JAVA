@@ -10,7 +10,6 @@ import com.cn.chat.bridge.auth.repository.entity.User;
 import com.cn.chat.bridge.auth.request.UserPageRequest;
 import com.cn.chat.bridge.auth.vo.UserInfoVo;
 import com.cn.chat.bridge.auth.vo.UserListVo;
-import com.cn.chat.bridge.auth.vo.UserTotalVo;
 import com.cn.chat.bridge.business.repository.OrderRepository;
 import com.cn.chat.bridge.business.service.UserService;
 import com.cn.chat.bridge.common.constant.CodeEnum;
@@ -93,11 +92,6 @@ public class UserServiceImpl implements UserService {
 
         return user.convert2UserInfoVo();
 
-    }
-
-    @Override
-    public UserTotalVo getTotalUsers() {
-        return UserTotalVo.create4Total(repository.count());
     }
 
     @Override

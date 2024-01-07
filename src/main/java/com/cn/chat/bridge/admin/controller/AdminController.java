@@ -4,7 +4,6 @@ import com.cn.chat.bridge.admin.request.*;
 import com.cn.chat.bridge.admin.service.SystemService;
 import com.cn.chat.bridge.auth.request.UserPageRequest;
 import com.cn.chat.bridge.auth.vo.UserListVo;
-import com.cn.chat.bridge.auth.vo.UserTotalVo;
 import com.cn.chat.bridge.business.request.AddProductRequest;
 import com.cn.chat.bridge.business.request.OrderPageRequest;
 import com.cn.chat.bridge.business.request.ProductPageRequest;
@@ -101,18 +100,10 @@ public class AdminController {
      * 分页获取用户信息
      *
      */
-    @GetMapping("/user/get/page")
+    @GetMapping("/user/page")
     public ResponseVo<PageVo<UserListVo>> getUserPages(@ModelAttribute @Valid UserPageRequest request) {
 
         return ResponseVo.success(userService.pageList(request));
-    }
-
-    /**
-     * 获取平台总人数
-     */
-    @GetMapping("/user/get/count")
-    public ResponseVo<UserTotalVo> getPlatformCount() {
-        return ResponseVo.success(userService.getTotalUsers());
     }
 
     /**
