@@ -143,14 +143,24 @@ VALUES (null, 'ANNOUNCEMENT', 'context', NULL, now(), now(), 1, 1),
 CREATE TABLE IF NOT EXISTS `tb_dialogue`
 (
     `id`              BIGINT AUTO_INCREMENT COMMENT '主键' PRIMARY KEY,
-    `uuid`            VARCHAR(64)   NOT NULL COMMENT '唯一id',
-    `issue`           LONGTEXT NOT NULL COMMENT '问题',
-    `answer`          LONGTEXT NOT NULL COMMENT '答案',
-    `created_time`    DATETIME NOT NULL COMMENT '创建时间',
-    `update_time`     DATETIME NOT NULL COMMENT '修改时间',
-    `created_user_id` BIGINT   NOT NULL COMMENT '创建者id',
-    `update_user_id`  BIGINT   NOT NULL COMMENT '编辑者id',
-    INDEX `idx_tb_dialogue_uuid`(`uuid`)
+    `session_id`      VARCHAR(64) NOT NULL COMMENT '会话凭证',
+    `role`            VARCHAR(64) NOT NULL COMMENT '角色',
+    `content`         LONGTEXT    NOT NULL COMMENT '内容',
+    `created_time`    DATETIME    NOT NULL COMMENT '创建时间',
+    `update_time`     DATETIME    NOT NULL COMMENT '修改时间',
+    `created_user_id` BIGINT      NOT NULL COMMENT '创建者id',
+    `update_user_id`  BIGINT      NOT NULL COMMENT '编辑者id',
+    INDEX `idx_tb_dialogue_session_id` (`session_id`)
+);
+
+CREATE TABLE IF NOT EXISTS `tb_session`
+(
+    `session_id`      VARCHAR(64)  NOT NULL PRIMARY KEY COMMENT '会话id，主键',
+    `title`           VARCHAR(256) NOT NULL COMMENT '对话标题',
+    `created_time`    DATETIME     NOT NULL COMMENT '创建时间',
+    `update_time`     DATETIME     NOT NULL COMMENT '修改时间',
+    `created_user_id` BIGINT       NOT NULL COMMENT '创建者id',
+    `update_user_id`  BIGINT       NOT NULL COMMENT '编辑者id'
 );
 
 

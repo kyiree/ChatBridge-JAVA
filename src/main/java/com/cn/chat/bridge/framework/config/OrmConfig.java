@@ -1,4 +1,4 @@
-package com.cn.chat.bridge.framework.config.orm;
+package com.cn.chat.bridge.framework.config;
 
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;

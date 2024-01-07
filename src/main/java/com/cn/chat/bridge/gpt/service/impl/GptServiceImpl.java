@@ -13,8 +13,8 @@ import com.cn.chat.bridge.common.constant.CacheConstant;
 import com.cn.chat.bridge.common.constant.EnableEnum;
 import com.cn.chat.bridge.common.service.ICacheService;
 import com.cn.chat.bridge.common.utils.AuthUtils;
-import com.cn.chat.bridge.gpt.dto.WebMessageRequest;
 import com.cn.chat.bridge.gpt.request.OpenAiGptRequest;
+import com.cn.chat.bridge.gpt.service.DialogueService;
 import com.cn.chat.bridge.gpt.service.GptService;
 import com.cn.chat.bridge.gpt.vo.GptSessionIdVo;
 import lombok.Data;
@@ -51,6 +51,8 @@ public class GptServiceImpl implements GptService {
     private final PersonalityRepository personalityRepository;
 
     private final SystemService systemService;
+
+    private final DialogueService dialogueService;
 
     @Override
     @Async
@@ -96,15 +98,17 @@ public class GptServiceImpl implements GptService {
 
     @Override
     public GptSessionIdVo getSessionId() {
-        // todo kyire 是否考虑分布式
+        // todo kyire 2024/1/6 是否考虑分布式
         return GptSessionIdVo.create(UUID.randomUUID().toString());
     }
 
     @Override
-    public Flux<String> concatenationGpt(WebMessageRequest request) {
+    public Flux<String> concatenationGpt(String question, String sessionId, Long userId) {
         OpenAiConfigDto openAiConfig = systemService.getOpenAiConfig();
         ProxyConfigDto proxyConfig = systemService.getProxyConfig();
 
+        // 构造请求参数
+        WebClient.Builder webClientBuilder = webClient.defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + openAiConfig.fetchOpenPlusKey());
 
         // 创建带有代理的HttpClient
         HttpClient httpClient = Objects.equals(proxyConfig.getEnable(), EnableEnum.ENABLE) ? HttpClient.create()
@@ -115,7 +119,6 @@ public class GptServiceImpl implements GptService {
                                         .port(proxyConfig.getProxyPort())
                         )
                 ) : null;
-        WebClient.Builder webClientBuilder = webClient.defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + openAiConfig.fetchOpenPlusKey());
 
         if (Objects.nonNull(httpClient)) {
             webClientBuilder.clientConnector(new ReactorClientHttpConnector(httpClient));
@@ -124,7 +127,7 @@ public class GptServiceImpl implements GptService {
         return webClientBuilder.build()
                 .post()
                 .uri(openAiConfig.getOpenAiPlusUrl())
-                .body(BodyInserters.fromValue(OpenAiGptRequest.create4Request(request.getMessages())))
+                .body(BodyInserters.fromValue(OpenAiGptRequest.create4Request(dialogueService.buildMessages(question, sessionId, userId))))
                 .retrieve()
                 .bodyToFlux(String.class);
     }

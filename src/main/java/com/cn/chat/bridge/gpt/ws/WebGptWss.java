@@ -10,7 +10,6 @@ import com.cn.chat.bridge.common.exception.BusinessException;
 import com.cn.chat.bridge.common.utils.AuthUtils;
 import com.cn.chat.bridge.common.utils.JsonUtils;
 import com.cn.chat.bridge.common.utils.SpringContextUtil;
-import com.cn.chat.bridge.gpt.dto.WebMessageRequest;
 import com.cn.chat.bridge.gpt.service.GptService;
 import com.cn.chat.bridge.gpt.vo.ChatGptChunkChoicesDeltaVo;
 import com.cn.chat.bridge.gpt.vo.ChatGptChunkChoicesVo;
@@ -25,7 +24,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -55,10 +53,10 @@ public class WebGptWss {
     }
 
     @OnMessage
-    public void onMessage(String message, @PathParam("token") String token, @PathParam("sessionId") String sessionId) {
+    public void onMessage(String question, @PathParam("token") String token, @PathParam("sessionId") String sessionId) {
         try {
-            // tpdo 前端传最新的
-            WebMessageRequest webMessageRequest = JsonUtils.toJavaObject(message, WebMessageRequest.class);
+            BusinessException.assertNotBlank(question);
+            // 前端只需传用户最新的提问，其它上下文从数据库查询
 
             Long userId = AuthUtils.getLoginIdByToken(token);
 
@@ -67,9 +65,9 @@ public class WebGptWss {
             Long frequency = SpringContextUtil.getBean(SystemService.class).getServerConfig().getGptPlusFrequency();
 
             SpringContextUtil.getBean(UserService.class).minusFrequency(frequency, userId);
-            // 与GPT建立通信
-            List<String> deltas = new ArrayList<>(1500);
-            SpringContextUtil.getBean(GptService.class).concatenationGpt(webMessageRequest)
+            // 与GPT建立通信，采用的是多次读取部分回答的方式
+            StringBuilder answerBuilder = new StringBuilder(1500);
+            SpringContextUtil.getBean(GptService.class).concatenationGpt(question, sessionId, userId)
                     .doFinally(signal -> handleWebSocketCompletion())
                     .subscribe(data -> {
                         if (StringUtils.isNotBlank(data) && !Objects.equals(data, MessageConstant.OPENAI_CHUNK_OBJECT_END)) {
@@ -83,7 +81,7 @@ public class WebGptWss {
                                     try {
                                         this.session.getBasicRemote().sendText(delta.getContent());
                                     } catch (Exception e) {
-                                        // 用户可能手动端口连接
+                                        // 用户可能手动断开连接
                                         throw BusinessException.create(CodeEnum.CONNECT_CLOSE);
                                     }
                                 }

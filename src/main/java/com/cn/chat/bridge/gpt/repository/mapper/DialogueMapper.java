@@ -1,7 +1,7 @@
-package com.cn.chat.bridge.business.repository.mapper;
+package com.cn.chat.bridge.gpt.repository.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.cn.chat.bridge.business.repository.entity.Dialogue;
+import com.cn.chat.bridge.gpt.repository.entity.Dialogue;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

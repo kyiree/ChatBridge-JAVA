@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.chat.bridge.gpt.repository.mapper.SessionMapper">
+
+    <select id="findPage" resultType="com.cn.chat.bridge.gpt.repository.entity.Session">
+        SELECT * FROM `tb_session` s
+        WHERE s.created_user_id = #{userId}
+        <if test="null != request.search and '' != request.search">
+            <bind name="search" value="'%' + request.search + '%'" />
+            AND (s.title LIKE #{search})
+        </if>
+        ORDER BY
+        s.${request.sortProp}
+        <if test="!request.isAsc()">
+            DESC
+        </if>
+    </select>
+
+</mapper>

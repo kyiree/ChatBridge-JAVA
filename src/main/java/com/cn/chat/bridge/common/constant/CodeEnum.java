@@ -38,6 +38,7 @@ public enum CodeEnum {
     CONNECT_CLOSE(21, "连接关闭"),
     LOGIN_ERROR(22, "登录信息失效,请重新登录"),
     FILE_UPLOAD_ERROR(23, "上传文件异常"),
+    PRIVILEGE_ERROR(24, "数据不存在或没有访问权限"),
 
     COMMON_EXIST(201, "%s已存在"),
     ;
