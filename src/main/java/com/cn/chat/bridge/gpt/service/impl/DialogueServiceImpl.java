@@ -12,10 +12,7 @@ import com.cn.chat.bridge.gpt.repository.DialogueRepository;
 import com.cn.chat.bridge.gpt.repository.SessionRepository;
 import com.cn.chat.bridge.gpt.repository.entity.Dialogue;
 import com.cn.chat.bridge.gpt.repository.entity.Session;
-import com.cn.chat.bridge.gpt.request.DeleteSessionRequest;
-import com.cn.chat.bridge.gpt.request.GetDialogueListRequest;
-import com.cn.chat.bridge.gpt.request.OpenAiGptMessageRequest;
-import com.cn.chat.bridge.gpt.request.SessionPageRequest;
+import com.cn.chat.bridge.gpt.request.*;
 import com.cn.chat.bridge.gpt.service.DialogueService;
 import com.cn.chat.bridge.gpt.vo.DialogueListVo;
 import com.cn.chat.bridge.gpt.vo.SessionListVo;
@@ -68,6 +65,13 @@ public class DialogueServiceImpl implements DialogueService {
 
         return openAiGptMessageRequests;
 
+    }
+
+    @Override
+    @Transactional
+    public void addDialogue(AddDialogueRequest request) {
+        Dialogue addDialogue = Dialogue.create4Add(request.getSessionId(), request.getRole(), request.getContent(), request.getUserId());
+        repository.save(addDialogue);
     }
 
     @Override

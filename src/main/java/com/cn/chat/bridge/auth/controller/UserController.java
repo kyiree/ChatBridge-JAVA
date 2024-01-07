@@ -5,7 +5,6 @@ import com.cn.chat.bridge.auth.request.UpdatePersonalityRequest;
 import com.cn.chat.bridge.auth.request.UpdateUserNameRequest;
 import com.cn.chat.bridge.auth.request.WeChatBindRequest;
 import com.cn.chat.bridge.auth.vo.UserInfoVo;
-import com.cn.chat.bridge.business.service.StarService;
 import com.cn.chat.bridge.business.service.UserService;
 import com.cn.chat.bridge.business.vo.PersonalityConfigStructureVo;
 import com.cn.chat.bridge.common.vo.BaseVo;
@@ -25,8 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserController {
 
     private final UserService userService;
-
-    private final StarService starService;
 
     private final GptService gptService;
 

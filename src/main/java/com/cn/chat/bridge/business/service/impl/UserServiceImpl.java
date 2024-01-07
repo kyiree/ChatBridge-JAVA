@@ -12,7 +12,6 @@ import com.cn.chat.bridge.auth.vo.UserInfoVo;
 import com.cn.chat.bridge.auth.vo.UserListVo;
 import com.cn.chat.bridge.auth.vo.UserTotalVo;
 import com.cn.chat.bridge.business.repository.OrderRepository;
-import com.cn.chat.bridge.business.repository.StarRepository;
 import com.cn.chat.bridge.business.service.UserService;
 import com.cn.chat.bridge.common.constant.CodeEnum;
 import com.cn.chat.bridge.common.constant.FileEnum;
@@ -36,8 +35,6 @@ import java.util.Objects;
 public class UserServiceImpl implements UserService {
 
     private final AliUploadServiceImpl aliUploadServiceImpl;
-
-    private final StarRepository starRepository;
 
     private final OrderRepository orderRepository;
     private final UserRepository repository;
@@ -72,9 +69,6 @@ public class UserServiceImpl implements UserService {
         if (Objects.isNull(user) || !Objects.equals(user.getPassword(), password)) {
             throw BusinessException.create(CodeEnum.EMAIL_LOGIN_PWD_ERR);
         }
-
-        // 将收藏归为小程序账号所属
-        starRepository.updateUserIdByUserId(user.getId(), currentLoginId);
 
         // 打赏记录
         orderRepository.updateUserIdByUserId(user.getId(), currentLoginId);

@@ -3,10 +3,7 @@ package com.cn.chat.bridge.gpt.service;
 
 import com.cn.chat.bridge.common.vo.ListVo;
 import com.cn.chat.bridge.common.vo.PageVo;
-import com.cn.chat.bridge.gpt.request.DeleteSessionRequest;
-import com.cn.chat.bridge.gpt.request.GetDialogueListRequest;
-import com.cn.chat.bridge.gpt.request.OpenAiGptMessageRequest;
-import com.cn.chat.bridge.gpt.request.SessionPageRequest;
+import com.cn.chat.bridge.gpt.request.*;
 import com.cn.chat.bridge.gpt.vo.DialogueListVo;
 import com.cn.chat.bridge.gpt.vo.SessionListVo;
 
@@ -23,6 +20,13 @@ public interface DialogueService {
      * @return
      */
     List<OpenAiGptMessageRequest> buildMessages(String question, String sessionId, Long userId);
+
+    /**
+     * 添加对话
+     *
+     * @param request
+     */
+    void addDialogue(AddDialogueRequest request);
 
     /**
      * 分页获取会话列表

@@ -10,6 +10,9 @@ import com.cn.chat.bridge.common.exception.BusinessException;
 import com.cn.chat.bridge.common.utils.AuthUtils;
 import com.cn.chat.bridge.common.utils.JsonUtils;
 import com.cn.chat.bridge.common.utils.SpringContextUtil;
+import com.cn.chat.bridge.gpt.constant.OpenAiRoleConstant;
+import com.cn.chat.bridge.gpt.request.AddDialogueRequest;
+import com.cn.chat.bridge.gpt.service.DialogueService;
 import com.cn.chat.bridge.gpt.service.GptService;
 import com.cn.chat.bridge.gpt.vo.ChatGptChunkChoicesDeltaVo;
 import com.cn.chat.bridge.gpt.vo.ChatGptChunkChoicesVo;
@@ -68,7 +71,15 @@ public class WebGptWss {
             // 与GPT建立通信，采用的是多次读取部分回答的方式
             StringBuilder answerBuilder = new StringBuilder(1500);
             SpringContextUtil.getBean(GptService.class).concatenationGpt(question, sessionId, userId)
-                    .doFinally(signal -> handleWebSocketCompletion())
+                    .doFinally(signal -> {
+                        try {
+                            SpringContextUtil.getBean(DialogueService.class).addDialogue(AddDialogueRequest.create4Add(sessionId, OpenAiRoleConstant.ASSISTANT, answerBuilder.toString(), userId));
+                        } catch (Exception e) {
+                            log.error("添加对话异常：sessionId: [{}] userId: [{}]", sessionId, userId, e);
+                        } finally {
+                            handleWebSocketCompletion();
+                        }
+                    })
                     .subscribe(data -> {
                         if (StringUtils.isNotBlank(data) && !Objects.equals(data, MessageConstant.OPENAI_CHUNK_OBJECT_END)) {
                             ChatGptChunkVo chatGptChunkVo = JsonUtils.toJavaObject(data, new TypeReference<ChatGptChunkVo>() {
@@ -80,6 +91,7 @@ public class WebGptWss {
                                     // 可能会抛出关闭异常
                                     try {
                                         this.session.getBasicRemote().sendText(delta.getContent());
+                                        answerBuilder.append(delta.getContent());
                                     } catch (Exception e) {
                                         // 用户可能手动断开连接
                                         throw BusinessException.create(CodeEnum.CONNECT_CLOSE);
