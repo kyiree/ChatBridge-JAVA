@@ -48,7 +48,7 @@ public interface UserService {
     /**
      * 修改用户信息
      */
-    void update(UpdateUserRequest dto);
+    void update(Long id, UpdateUserRequest dto);
 
     /**
      * 减少使用次数

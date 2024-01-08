@@ -153,9 +153,9 @@ public class AdminController {
      *
      * @return the bot configuration
      */
-    @PostMapping("/user/put/data")
-    public ResponseVo<BaseVo> update(@RequestBody @Valid UpdateUserRequest request) {
-        userService.update(request);
+    @PutMapping("/user/{id}")
+    public ResponseVo<BaseVo> update(@PathVariable Long id, @RequestBody @Valid UpdateUserRequest request) {
+        userService.update(id, request);
         return ResponseVo.success();
     }
 

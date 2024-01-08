@@ -111,8 +111,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void update(UpdateUserRequest request) {
-        User old = repository.getById(request.getUserId());
+    public void update(Long id, UpdateUserRequest request) {
+        User old = repository.getById(id);
         BusinessException.assertNotNull(old);
 
         User update = User.create4Update(old, request);

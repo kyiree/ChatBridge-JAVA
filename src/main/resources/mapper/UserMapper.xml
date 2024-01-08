@@ -7,7 +7,7 @@
         <trim prefix="WHERE" prefixOverrides="AND |OR ">
             <if test="null != request.search and '' != request.search">
                 <bind name="search" value="'%' + request.search + '%'" />
-                AND (u.user_name LIKE #{search} OR u.open_id LIKE #{search})
+                AND (u.user_name LIKE #{search})
             </if>
         </trim>
         ORDER BY

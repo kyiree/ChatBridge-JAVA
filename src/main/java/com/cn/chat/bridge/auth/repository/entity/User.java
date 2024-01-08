@@ -79,17 +79,6 @@ public class User {
         return add;
     }
 
-    public static User create4Add(String openId) {
-        LocalDateTime now = LocalDateTime.now();
-
-        User add = new User();
-        add.setType(UserTypeEnum.NORMAL);
-        add.setFrequency(5L);
-        add.setCreatedTime(now);
-        add.setUpdateTime(now);
-        return add;
-    }
-
     public UserInfoVo convert2UserInfoVo() {
         UserInfoVo userInfoVo = new UserInfoVo();
         userInfoVo.setUserName(userName);
@@ -112,6 +101,7 @@ public class User {
     public static User create4Update(User old, UpdateUserRequest request) {
         User update = CloneUtils.deepClone(old);
 
+        update.setUserName(request.getUserName());
         update.setFrequency(request.getFrequency());
         return update;
     }
