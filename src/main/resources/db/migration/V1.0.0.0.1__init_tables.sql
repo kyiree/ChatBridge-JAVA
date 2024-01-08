@@ -1,15 +1,4 @@
 USE `chatbridge`;
-CREATE TABLE IF NOT EXISTS `tb_exchange`
-(
-    `id`              BIGINT AUTO_INCREMENT COMMENT '兑换码ID' PRIMARY KEY,
-    `code`            VARCHAR(8) NOT NULL COMMENT '兑换码',
-    `frequency`       BIGINT     NOT NULL COMMENT '兑换码所含Ai币',
-    `created_time`    DATETIME   NOT NULL COMMENT '创建时间',
-    `update_time`     DATETIME   NOT NULL COMMENT '修改时间',
-    `created_user_id` BIGINT     NOT NULL COMMENT '创建者id',
-    `update_user_id`  BIGINT     NOT NULL COMMENT '编辑者id',
-    CONSTRAINT `idx_tb_exchange_code` UNIQUE (`code`)
-);
 
 CREATE TABLE IF NOT EXISTS `tb_order`
 (

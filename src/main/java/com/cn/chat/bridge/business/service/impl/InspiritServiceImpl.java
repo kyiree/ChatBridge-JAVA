@@ -4,8 +4,6 @@ import com.cn.chat.bridge.admin.service.SystemService;
 import com.cn.chat.bridge.auth.constant.UserConstant;
 import com.cn.chat.bridge.auth.repository.UserRepository;
 import com.cn.chat.bridge.auth.repository.entity.User;
-import com.cn.chat.bridge.business.repository.ExchangeRepository;
-import com.cn.chat.bridge.business.repository.entity.Exchange;
 import com.cn.chat.bridge.business.service.InspiritService;
 import com.cn.chat.bridge.common.constant.CacheConstant;
 import com.cn.chat.bridge.common.constant.CodeEnum;
@@ -17,14 +15,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class InspiritServiceImpl implements InspiritService {
-
-    private final ExchangeRepository exchangeRepository;
 
     private final RedisLockHelper lockHelper;
 
@@ -58,28 +53,6 @@ public class InspiritServiceImpl implements InspiritService {
                 cacheService.refreshCacheTimeout(key, 60L);
             }
             userRepository.updateFrequencyPlusById(AuthUtils.getCurrentLoginId(), systemService.getServerConfig().getVideoFrequency());
-        }
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void useExchangeCode(String code) {
-        Long userId = AuthUtils.getCurrentLoginId();
-        List<Exchange> exchanges = exchangeRepository.getByCode(code);
-        BusinessException.assertNotEmpty(exchanges, CodeEnum.NOT_EXIST_CODE);
-
-        Exchange exchange = exchanges.get(0);
-        String lockTime = String.valueOf(System.currentTimeMillis());
-        String lockPrefix = "LOCK_EXCHANGE_CODE:" + code;
-        boolean lock = lockHelper.lock(lockPrefix, lockTime);
-        if (!lock) {
-            throw BusinessException.create(CodeEnum.CONCURRENT);
-        }
-        try {
-            userRepository.updateFrequencyPlusById(userId, exchange.getFrequency());
-            exchangeRepository.removeById(exchange.getId());
-        } finally {
-            lockHelper.unlock(lockPrefix, lockTime);
         }
     }
 }

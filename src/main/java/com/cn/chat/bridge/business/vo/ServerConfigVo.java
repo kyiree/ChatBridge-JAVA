@@ -12,7 +12,7 @@ public class ServerConfigVo implements BaseVo {
 
     private String openAiPlusUrl;
 
-    private String openPlusKey;
+    private String openAiPlusKey;
 
     private Long gptPlusFrequency;
 
@@ -26,7 +26,7 @@ public class ServerConfigVo implements BaseVo {
         ServerConfigVo serverConfigVo = new ServerConfigVo();
         if (Objects.nonNull(openAiConfigDto)) {
             serverConfigVo.setOpenAiPlusUrl(openAiConfigDto.getOpenAiPlusUrl());
-            serverConfigVo.setOpenPlusKey(openAiConfigDto.fetchOpenPlusKey());
+            serverConfigVo.setOpenAiPlusKey(openAiConfigDto.fetchOpenPlusKey());
             serverConfigVo.setGptPlusFrequency(openAiConfigDto.getGptPlusFrequency());
         }
 

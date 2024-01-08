@@ -35,6 +35,18 @@ public class BusinessException extends RuntimeException {
         return new BusinessException(codeEnum);
     }
 
+    public static void assertNotBlank(String str, String field) {
+        if (StringUtils.isBlank(str)) {
+            throw new BusinessException(CodeEnum.OBJ_NULL_ERROR_WITH_PARAM, Lists.newArrayList(field));
+        }
+    }
+
+    public static void assertNotNull(Object obj, String field) {
+        if (Objects.isNull(obj)) {
+            throw new BusinessException(CodeEnum.OBJ_NULL_ERROR_WITH_PARAM, Lists.newArrayList(field));
+        }
+    }
+
     public static void assertNotBlank(String str) {
         if (StringUtils.isBlank(str)) {
             throw new BusinessException(CodeEnum.STR_BLANK_ERROR);

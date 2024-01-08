@@ -12,8 +12,6 @@ public class CacheConstant {
 
     public static final String WECHAT_CONFIG = "WECHAT:CONFIG";
 
-    public static final String BOT_CONFIG = "BOT:CONFIG";
-
     public static final String ALI_OSS_CONFIG = "ALI:OSS:CONFIG";
 
     public static final String ALI_PAY_CONFIG = "ALI:PAY:CONFIG";

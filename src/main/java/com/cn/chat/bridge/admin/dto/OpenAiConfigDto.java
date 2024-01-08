@@ -16,7 +16,7 @@ public class OpenAiConfigDto {
     public static OpenAiConfigDto create(ServerConfigRequest request) {
         OpenAiConfigDto dto = new OpenAiConfigDto();
         dto.setOpenAiPlusUrl(request.getOpenAiPlusUrl());
-        dto.setOpenPlusKey(CryptUtils.encryptSm4(request.getOpenPlusKey()));
+        dto.setOpenPlusKey(CryptUtils.encryptSm4(request.getOpenAiPlusKey()));
         dto.setGptPlusFrequency(request.getGptPlusFrequency());
         return dto;
     }

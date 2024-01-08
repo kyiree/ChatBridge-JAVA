@@ -1,6 +1,9 @@
 package com.cn.chat.bridge.admin.controller;
 
-import com.cn.chat.bridge.admin.request.*;
+import com.cn.chat.bridge.admin.request.ServerConfigRequest;
+import com.cn.chat.bridge.admin.request.TerminalConfigRequest;
+import com.cn.chat.bridge.admin.request.UpdateAnnouncementRequest;
+import com.cn.chat.bridge.admin.request.UpdateUserRequest;
 import com.cn.chat.bridge.admin.service.SystemService;
 import com.cn.chat.bridge.auth.request.UserPageRequest;
 import com.cn.chat.bridge.auth.vo.UserListVo;
@@ -39,25 +42,12 @@ public class AdminController {
 
     private final PayService payService;
 
-
-    /**
-     * 生成兑换码
-     *
-     * @return the bot configuration
-     */
-    @PostMapping("/exchange/build")
-    public ResponseVo<BaseVo> buildExchangeCode(@RequestBody @Valid GenerateExchangeRequest request) {
-        systemService.buildRedemptionCode(request);
-        return ResponseVo.success();
-    }
-
-
     /**
      * 更新服务器配置参数
      *
      * @return the bot configuration
      */
-    @PostMapping("/server/put/config")
+    @PutMapping("/server/config")
     public ResponseVo<BaseVo> updateServerConfig(@RequestBody @Valid ServerConfigRequest request) {
         systemService.updateServerConfig(request);
         return ResponseVo.success();
@@ -68,37 +58,30 @@ public class AdminController {
      *
      * @return the bot configuration
      */
-    @GetMapping("/server/get/config")
+    @GetMapping("/server/config")
     public ResponseVo<ServerConfigVo> getServerConfig() {
         return ResponseVo.success(systemService.getServerConfig());
     }
 
-
     /**
-     * 更新终端
-     *
-     * @return the bot configuration
+     * 更新终端配置
      */
-    @PostMapping("/server/put/terminal")
+    @PutMapping("/server/terminal")
     public ResponseVo<BaseVo> updateTerminalConfig(@RequestBody @Valid TerminalConfigRequest request) {
         systemService.updateTerminal(request);
         return ResponseVo.success();
     }
 
     /**
-     * 获取终端
-     *
-     * @return the bot configuration
+     * 更新终端配置
      */
-    @GetMapping("/server/get/terminal")
+    @GetMapping("/server/terminal")
     public ResponseVo<ControlStructureVo> getTerminalConfig() {
         return ResponseVo.success(systemService.getTerminal());
     }
 
-
     /**
      * 分页获取用户信息
-     *
      */
     @GetMapping("/user/page")
     public ResponseVo<PageVo<UserListVo>> getUserPages(@ModelAttribute @Valid UserPageRequest request) {
@@ -128,7 +111,6 @@ public class AdminController {
         return ResponseVo.success(payService.shelvesProduct(request));
     }
 
-
     @GetMapping(value = "/product/get/page", name = "分页获取产品", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseVo<PageVo<ProductListVo>> productPages(@ModelAttribute @Valid ProductPageRequest request) {
         return ResponseVo.success(
@@ -147,7 +129,6 @@ public class AdminController {
         return ResponseVo.success();
     }
 
-
     /**
      * 修改用户信息
      *
@@ -156,29 +137,6 @@ public class AdminController {
     @PutMapping("/user/{id}")
     public ResponseVo<BaseVo> update(@PathVariable Long id, @RequestBody @Valid UpdateUserRequest request) {
         userService.update(id, request);
-        return ResponseVo.success();
-    }
-
-    /**
-     * 分页获取兑换码
-     *
-     * @return the result
-     */
-    @GetMapping("/exchange/get/page")
-    public ResponseVo<BaseVo> exchangeCodePage(@ModelAttribute @Valid ExchangePageRequest request) {
-
-        return ResponseVo.success(systemService.findExchangeCodePage(request));
-    }
-
-    /**
-     * 根据ID删除兑换码
-     *
-     * @param id the id
-     * @return the result
-     */
-    @PostMapping(value = "/exchange/delete/{id}")
-    public ResponseVo<BaseVo> deleteExchangeById(@PathVariable final Long id) {
-        systemService.deleteExChangeById(id);
         return ResponseVo.success();
     }
 

@@ -19,8 +19,6 @@ public enum SystemPropertyTypeEnum {
 
     WECHAT_CONFIG(CacheConstant.WECHAT_CONFIG, WeChatConfigDto.class),
 
-    BOT_CONFIG(CacheConstant.BOT_CONFIG, BotConfigDto.class),
-
     ALI_OSS_CONFIG(CacheConstant.ALI_OSS_CONFIG, AliOssConfigDto.class),
 
     ALI_PAY_CONFIG(CacheConstant.ALI_PAY_CONFIG, AliPayConfigDto.class),

@@ -11,11 +11,4 @@ public interface InspiritService {
      * 视频奖励
      */
     void rewardVideo();
-
-    /**
-     * 使用兑换码
-     *
-     * @param code the code
-     */
-    void useExchangeCode(String code);
 }

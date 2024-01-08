@@ -41,6 +41,8 @@ public enum CodeEnum {
     PRIVILEGE_ERROR(24, "数据不存在或没有访问权限"),
 
     COMMON_EXIST(201, "%s已存在"),
+
+    OBJ_NULL_ERROR_WITH_PARAM(202, "%s不能为空"),
     ;
     public final Integer code;
     public final String msg;

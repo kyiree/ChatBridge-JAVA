@@ -5,7 +5,6 @@ import com.cn.chat.bridge.common.vo.BaseVo;
 import com.cn.chat.bridge.common.vo.ResponseVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,15 +40,4 @@ public class InspiritController {
         return ResponseVo.success();
     }
 
-
-    /**
-     * 使用兑换码
-     *
-     * @return the result
-     */
-    @PostMapping("/exchange/{code}")
-    public ResponseVo<BaseVo> useExchangeCode(@PathVariable String code) {
-        inspiritService.useExchangeCode(code);
-        return ResponseVo.success();
-    }
 }

@@ -12,7 +12,7 @@ public class ServerConfigRequest implements BaseRequest {
     private String openAiPlusUrl;
 
     @NotBlank
-    private String openPlusKey;
+    private String openAiPlusKey;
 
     @NotNull
     private Long gptPlusFrequency;
@@ -25,14 +25,4 @@ public class ServerConfigRequest implements BaseRequest {
 
     @NotNull
     private Long signInFrequency;
-
-    @NotNull
-    private String botNameChinese;
-
-    @NotNull
-    private String botNameEnglish;
-
-    @NotNull
-    private String author;
-
 }
