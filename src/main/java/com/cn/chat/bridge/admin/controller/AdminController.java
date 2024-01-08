@@ -23,7 +23,6 @@ import com.cn.chat.bridge.common.vo.ResponseVo;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -103,15 +102,18 @@ public class AdminController {
 
     /**
      * 新增产品
-     *
-     * @return the bot configuration
      */
-    @PostMapping("/product/put/data")
-    public ResponseVo<IdVo> productsShelf(@RequestBody @Validated AddProductRequest request) {
-        return ResponseVo.success(payService.shelvesProduct(request));
+    @PostMapping("/product")
+    public ResponseVo<IdVo> addProduct(@RequestBody @Validated AddProductRequest request) {
+        return ResponseVo.success(payService.addProduct(request));
     }
 
-    @GetMapping(value = "/product/get/page", name = "分页获取产品", produces = MediaType.APPLICATION_JSON_VALUE)
+    /**
+     * 分页获取产品
+     *
+     * @return
+     */
+    @GetMapping(value = "/product/page")
     public ResponseVo<PageVo<ProductListVo>> productPages(@ModelAttribute @Valid ProductPageRequest request) {
         return ResponseVo.success(
                 payService.productPages(request)
@@ -123,8 +125,8 @@ public class AdminController {
      *
      * @return the bot configuration
      */
-    @PostMapping("/product/delete/{id}")
-    public ResponseVo<BaseVo> productsDelete(@PathVariable long id) {
+    @DeleteMapping("/product/{id}")
+    public ResponseVo<BaseVo> productsDelete(@PathVariable Long id) {
         payService.deleteProductById(id);
         return ResponseVo.success();
     }

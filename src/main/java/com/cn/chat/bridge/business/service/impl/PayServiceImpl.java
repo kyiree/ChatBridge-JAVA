@@ -139,8 +139,9 @@ public class PayServiceImpl implements PayService {
      *
      */
     @Override
-    public IdVo shelvesProduct(AddProductRequest request) {
-        Product add = Product.create4Add(request);
+    public IdVo addProduct(AddProductRequest request) {
+        Long userId = AuthUtils.getCurrentLoginId();
+        Product add = Product.create4Add(request, userId);
         productRepository.save(add);
         return IdVo.create(add.getId());
     }

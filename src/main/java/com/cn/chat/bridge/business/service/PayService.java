@@ -48,7 +48,7 @@ public interface PayService {
      * 上架产品
      *
      */
-    IdVo shelvesProduct(AddProductRequest request);
+    IdVo addProduct(AddProductRequest request);
 
     /**
      * 分页获取产品数据

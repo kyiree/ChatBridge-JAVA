@@ -3,7 +3,6 @@ package com.cn.chat.bridge.business.repository.entity;
 import com.baomidou.mybatisplus.annotation.*;
 import com.cn.chat.bridge.business.request.AddProductRequest;
 import com.cn.chat.bridge.business.vo.ProductListVo;
-import com.cn.chat.bridge.common.utils.BeanUtils;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -29,6 +28,10 @@ public class Product {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
+    private Long createdUserId;
+
+    private Long updateUserId;
+
     public ProductListVo convert2ListVo() {
         ProductListVo vo = new ProductListVo();
         vo.setProductId(id);
@@ -39,8 +42,18 @@ public class Product {
         return vo;
     }
 
-    public static Product create4Add(AddProductRequest request) {
-        return BeanUtils.copyClassProperTies(request, Product.class);
+    public static Product create4Add(AddProductRequest request, Long userId) {
+        LocalDateTime now = LocalDateTime.now();
+
+        Product product = new Product();
+        product.setName(request.getName());
+        product.setFrequency(request.getFrequency());
+        product.setPrice(request.getPrice());
+        product.setCreatedTime(now);
+        product.setUpdateTime(now);
+        product.setCreatedUserId(userId);
+        product.setUpdateUserId(userId);
+        return product;
     }
 
 }

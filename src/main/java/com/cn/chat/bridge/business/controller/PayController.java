@@ -1,6 +1,5 @@
 package com.cn.chat.bridge.business.controller;
 
-
 import com.cn.chat.bridge.business.request.OrderPageRequest;
 import com.cn.chat.bridge.business.request.ProductPageRequest;
 import com.cn.chat.bridge.business.service.PayService;
@@ -13,7 +12,6 @@ import com.cn.chat.bridge.common.vo.ResponseVo;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -46,7 +44,7 @@ public class PayController {
      *
      * @return the product list
      */
-    @GetMapping(value = "/product/list")
+    @GetMapping(value = "/product/page")
     public ResponseVo<PageVo<ProductListVo>> productPage(@ModelAttribute @Valid ProductPageRequest request) {
         return ResponseVo.success(payService.productPage(request));
     }
