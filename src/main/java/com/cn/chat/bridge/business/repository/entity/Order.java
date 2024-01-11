@@ -17,8 +17,6 @@ public class Order {
 
     private String orderNum;
 
-    private Long userId;
-
     private Long productId;
 
     private String productName;
@@ -43,6 +41,10 @@ public class Order {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
+    private Long createdUserId;
+
+    private Long updateUserId;
+
     public OrderListVo convert2ListVo() {
         OrderListVo vo = new OrderListVo();
         vo.setOrdersId(orderNum);
@@ -60,7 +62,6 @@ public class Order {
 
         Order order = new Order();
         order.setOrderNum(orderNum);
-        order.setUserId(userId);
         order.setProductId(product.getId());
         order.setProductName(product.getName());
         order.setProductPrice(product.getPrice());
@@ -68,6 +69,8 @@ public class Order {
         order.setState(0);
         order.setCreatedTime(now);
         order.setUpdateTime(now);
+        order.setCreatedUserId(userId);
+        order.setUpdateUserId(userId);
         return order;
     }
 

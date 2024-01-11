@@ -62,7 +62,7 @@ public interface PayService {
      * @param productId the product id
      * @return the alipay pay code vo
      */
-    AlipayPayCodeVo generatePayQrCode(final Long productId);
+    AlipayPayCodeVo generatePayQrCode(Long productId);
 
 
     /**

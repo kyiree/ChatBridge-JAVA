@@ -23,7 +23,6 @@ import com.cn.chat.bridge.common.vo.ResponseVo;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -104,7 +103,7 @@ public class AdminController {
      * 新增产品
      */
     @PostMapping("/product")
-    public ResponseVo<IdVo> addProduct(@RequestBody @Validated AddProductRequest request) {
+    public ResponseVo<IdVo> addProduct(@RequestBody @Valid AddProductRequest request) {
         return ResponseVo.success(payService.addProduct(request));
     }
 

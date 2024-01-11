@@ -160,19 +160,19 @@ public class PayServiceImpl implements PayService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public AlipayPayCodeVo generatePayQrCode(Long productId) {
-        final String timestamp = String.valueOf(System.currentTimeMillis());
+        String timestamp = String.valueOf(System.currentTimeMillis());
         // 当前登录用户ID
-        final Long currentLoginId = AuthUtils.getCurrentLoginId();
+        Long currentLoginId = AuthUtils.getCurrentLoginId();
         // 锁前缀
-        final String lockPrefix = "ORDER_USER:" + currentLoginId;
+        String lockPrefix = "ORDER_USER:" + currentLoginId;
         // 上锁
-        final boolean lock = lockHelper.lock(lockPrefix, timestamp);
+        boolean lock = lockHelper.lock(lockPrefix, timestamp);
 
         try {
             if (!lock) {
                 throw BusinessException.create(CodeEnum.PLACE_AN_ORDER_REPEATEDLY_ERR);
             }
-            final String key = OrderConstant.ORDER_PAY + currentLoginId + productId;
+            String key = OrderConstant.ORDER_PAY + currentLoginId + ":" + productId;
             if (cacheService.existsKey(key)) {
                 AlipayCacheStructureDto cache = cacheService.getFromCache4Object(key, AlipayCacheStructureDto.class);
                 // 生成BASE64图片给前端
@@ -277,9 +277,9 @@ public class PayServiceImpl implements PayService {
                 final Order order = orderRepository.getByOrderNum(outTradeNo);
                 if (Objects.nonNull(order)) {
                     orderRepository.updateStateAndPayTimeByOrderNum(outTradeNo, 1, LocalDateTime.now());
-                    userService.plusFrequency(order.getFrequency(), order.getUserId());
+                    userService.plusFrequency(order.getFrequency(), order.getCreatedUserId());
 
-                    cacheService.removeFromCache4Object(OrderConstant.ORDER_PAY + order.getUserId().toString() + order.getProductId());
+                    cacheService.removeFromCache4Object(OrderConstant.ORDER_PAY + order.getCreatedUserId() + ":" + order.getProductId());
                 }
 
                 return "success";
