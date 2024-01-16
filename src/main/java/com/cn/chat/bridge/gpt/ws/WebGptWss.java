@@ -37,8 +37,8 @@ import java.util.Objects;
 @Slf4j
 @ServerEndpoint("/gpt-web/api/{token}/{sessionId}")
 @SuppressWarnings("all")
-@Service
 @NoArgsConstructor
+@Service
 public class WebGptWss {
 
     private Session session;

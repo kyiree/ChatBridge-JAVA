@@ -22,8 +22,8 @@ public class OrderRepository extends ServiceImpl<OrderMapper, Order> {
 
     public void updateUserIdByUserId(Long fromUserId, Long toUserId) {
         baseMapper.update(null, Wrappers.lambdaUpdate(Order.class)
-                .set(Order::getUserId, toUserId)
-                .eq(Order::getUserId, fromUserId)
+                .set(Order::getCreatedUserId, toUserId)
+                .eq(Order::getCreatedUserId, fromUserId)
         );
     }
 
