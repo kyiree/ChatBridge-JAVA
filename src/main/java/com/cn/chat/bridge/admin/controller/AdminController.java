@@ -146,7 +146,7 @@ public class AdminController {
      *
      * @return the result
      */
-    @PostMapping("/put/announcement")
+    @PutMapping("announcement")
     public ResponseVo<BaseVo> updateAnnouncement(@RequestBody @Valid UpdateAnnouncementRequest request) {
         systemService.updateAnnouncement(request);
         return ResponseVo.success();

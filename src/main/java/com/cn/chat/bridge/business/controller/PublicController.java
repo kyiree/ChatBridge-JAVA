@@ -33,7 +33,7 @@ public class PublicController {
      *
      * @return the announcement
      */
-    @GetMapping("/get/announcement")
+    @GetMapping("/announcement")
     public ResponseVo<AnnouncementVo> getAnnouncement() {
         return ResponseVo.success(systemService.getAnnouncement());
     }
