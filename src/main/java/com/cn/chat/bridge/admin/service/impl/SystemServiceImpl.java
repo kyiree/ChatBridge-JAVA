@@ -6,9 +6,11 @@ import com.cn.chat.bridge.admin.repository.SystemSettingRepository;
 import com.cn.chat.bridge.admin.request.ServerConfigRequest;
 import com.cn.chat.bridge.admin.request.TerminalConfigRequest;
 import com.cn.chat.bridge.admin.request.UpdateAnnouncementRequest;
+import com.cn.chat.bridge.admin.request.UpdateMailConfigRequest;
 import com.cn.chat.bridge.admin.service.SystemService;
 import com.cn.chat.bridge.admin.vo.AnnouncementVo;
 import com.cn.chat.bridge.business.vo.ControlStructureVo;
+import com.cn.chat.bridge.business.vo.MailConfigVo;
 import com.cn.chat.bridge.business.vo.ServerConfigVo;
 import com.cn.chat.bridge.common.constant.CacheConstant;
 import com.cn.chat.bridge.common.exception.BusinessException;
@@ -50,6 +52,18 @@ public class SystemServiceImpl implements SystemService {
     public ControlStructureVo getTerminal() {
         ProxyConfigDto proxyConfig = getProxyConfig();
         return ControlStructureVo.create(proxyConfig);
+    }
+
+    @Override
+    public MailConfigVo getMailConfigVo() {
+        return MailConfigVo.create4Vo(getMailConfig());
+    }
+
+    @Override
+    public void updateMailConfig(UpdateMailConfigRequest request) {
+        Long userId = AuthUtils.getCurrentLoginId();
+        systemSettingRepository.updateByType(SystemPropertyTypeEnum.MAIL_CONFIG, MailConfigDto.create(request), userId);
+        cacheService.removeFromCache4Object(CacheConstant.MAIL_CONFIG);
     }
 
     @Override

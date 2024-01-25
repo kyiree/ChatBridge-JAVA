@@ -1,9 +1,6 @@
 package com.cn.chat.bridge.admin.controller;
 
-import com.cn.chat.bridge.admin.request.ServerConfigRequest;
-import com.cn.chat.bridge.admin.request.TerminalConfigRequest;
-import com.cn.chat.bridge.admin.request.UpdateAnnouncementRequest;
-import com.cn.chat.bridge.admin.request.UpdateUserRequest;
+import com.cn.chat.bridge.admin.request.*;
 import com.cn.chat.bridge.admin.service.SystemService;
 import com.cn.chat.bridge.auth.request.UserPageRequest;
 import com.cn.chat.bridge.auth.vo.UserListVo;
@@ -12,10 +9,7 @@ import com.cn.chat.bridge.business.request.OrderPageRequest;
 import com.cn.chat.bridge.business.request.ProductPageRequest;
 import com.cn.chat.bridge.business.service.PayService;
 import com.cn.chat.bridge.business.service.UserService;
-import com.cn.chat.bridge.business.vo.ControlStructureVo;
-import com.cn.chat.bridge.business.vo.OrderListVo;
-import com.cn.chat.bridge.business.vo.ProductListVo;
-import com.cn.chat.bridge.business.vo.ServerConfigVo;
+import com.cn.chat.bridge.business.vo.*;
 import com.cn.chat.bridge.common.vo.BaseVo;
 import com.cn.chat.bridge.common.vo.IdVo;
 import com.cn.chat.bridge.common.vo.PageVo;
@@ -71,11 +65,28 @@ public class AdminController {
     }
 
     /**
-     * 更新终端配置
+     * 获取终端配置
      */
     @GetMapping("/server/terminal")
     public ResponseVo<ControlStructureVo> getTerminalConfig() {
         return ResponseVo.success(systemService.getTerminal());
+    }
+
+    /**
+     * 获取邮箱配置
+     */
+    @GetMapping("/server/mail")
+    public ResponseVo<MailConfigVo> getMailConfig() {
+        return ResponseVo.success(systemService.getMailConfigVo());
+    }
+
+    /**
+     * 更新邮箱配置
+     */
+    @PutMapping("/server/mail")
+    public ResponseVo<MailConfigVo> updateMailConfig(@RequestBody @Valid UpdateMailConfigRequest request) {
+        systemService.updateMailConfig(request);
+        return ResponseVo.success();
     }
 
     /**

@@ -4,8 +4,10 @@ import com.cn.chat.bridge.admin.dto.*;
 import com.cn.chat.bridge.admin.request.ServerConfigRequest;
 import com.cn.chat.bridge.admin.request.TerminalConfigRequest;
 import com.cn.chat.bridge.admin.request.UpdateAnnouncementRequest;
+import com.cn.chat.bridge.admin.request.UpdateMailConfigRequest;
 import com.cn.chat.bridge.admin.vo.AnnouncementVo;
 import com.cn.chat.bridge.business.vo.ControlStructureVo;
+import com.cn.chat.bridge.business.vo.MailConfigVo;
 import com.cn.chat.bridge.business.vo.ServerConfigVo;
 
 /**
@@ -33,6 +35,19 @@ public interface SystemService {
      */
     ControlStructureVo getTerminal();
 
+    /**
+     * 获取邮箱配置
+     *
+     * @return ControlCommon
+     */
+    MailConfigVo getMailConfigVo();
+
+    /**
+     * 更新邮箱配置
+     *
+     * @param request
+     */
+    void updateMailConfig(UpdateMailConfigRequest request);
 
     /**
      * 更新终端配置
@@ -41,7 +56,6 @@ public interface SystemService {
 
     /**
      * 发布公告
-     *
      */
     void updateAnnouncement(UpdateAnnouncementRequest request);
 
