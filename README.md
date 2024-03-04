@@ -3,3 +3,8 @@
 
 # 简介
 模仿 chatgpt 的套壳网站
+
+# 小白入门系列文章
+
+https://www.toutiao.com/article/7328039975524958732/
+
